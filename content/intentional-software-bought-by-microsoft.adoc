@@ -1,0 +1,72 @@
+# Intentional Software bought by Microsoft
+
+https://medium.com/@dslmeinte/intentional-software-bought-by-microsoft-2606e6eb1106[Originally published] on April 20th, 2017.
+
+Last night, I was surprised to see a https://twitter.com/charlessimonyi/status/854335295986204672[tweet] by Charles Simonyi that Intentional Software, the company he founded after he left as a VP of Microsoft, is bought by Microsoft.
+
+My surprise does not pertain to Microsoft doing the buying.
+Microsoft is buying companies all the time, and for seemingly a variety of reasons: as an acqui-hire, to buy IP or to simple smother a potential competitor in its infancy.
+Also, if Intentional was ever going up for sale, Charles would trust only a handful of companies to abscond with his brain child, whatever the buying price was.
+Since Charles was already developing intentional programming/projectional editing IP when at Microsoft (as these videos are testimony of), it’s even possible that Charles and Microsoft entered into an agreement that only Microsoft could ever buy "`back`" Intentional.
+
+Two things that do surprise me are (1) that Intentional was up for sale at all, and (2) that, judging from Charles’ statement on their site, it seems to have pivoted quite a bit since they effectively went underground, and in a direction that seems to cater mostly for being integration in Microsoft Office — or whatever Microsoft chooses to call it this decade.
+
+Intentional Software has been quite a secretive company ever since it was founded in 2002.
+I had the luck to have seen some of what they did firsthand, so outside of current and former employees (who probably are up to their necks in NDAs), I can provide a somewhat more in-depth view of things than the scant things you can find on the web
+Martin Fowler also wrote about Intentional some 8 years ago in a bliki, and in his DSL book, which are excellent references for the "`dry facts`".
+Instead, I’ll stick to the anecdotal stuff, some of which is firsthand, and some of which reached me through word of mouth.
+
+Charles left Microsoft as a stupendously rich man.
+Enough to buy himself a 71m yacht with a crew that exists to cater to his every whim, as well as a couple of "`tourist flights`" to the International Space Station.
+Also enough to start a company without any incentive to become cash-flow positive anytime soon.
+
+This is essentially every software developer’s wet dream where you can just keep adding features eternally, simply because they seem like a good idea to you and tickle your thinking bone, without those meddling users telling you that some drudge feature like exporting to a text file, is what they really need.
+It’s even better than academia, since you only have to convince Charles (at heart very much a programmer himself) instead of writing some grant proposal which competes with a gazillion others.
+
+It’s therefore no surprise that Intentional could attract the best and brightest, especially if they had a tendency to be singularly captivated by the subjects of intentional programming and projectional editing, or more general by the prospect of being able to do Smart Things™ all day long, for as many hours and years as they could and chose to manage.
+Many of these people apparently got themselves one or more PhDs in such topics as quantum mechanics before applying for something even more challenging at Intentional.
+Or, as someone who visited their offices in Seattle exclaimed: "`Even the secretary has a PhD!`"
+
+This turned out to lead to impressive software — I would say "`evidently`" if it weren’t for the fact that they chose to keep it out of (almost) everyone’s hands.
+Luckily, I have been able to work the Intentional Domain Workbench, so I can say it is impressive.
+In fact, I can honestly say that almost nothing in software is rocket science, except for the IDW.
+
+The descriptions on Wikipedia and in Fowler’s bliki and book don’t quite do it justice.
+As an example: when running a domain in the IDW you can point to a pixel on the screen and ask the IDW why that pixel has that colour, at which point you’re presented with trace information about the chain of transformations that turns domain data into its visualisation.
+Oh, and all of this already ran quite smoothly -reactively even- on late 2000’s hardware.
+
+But don’t take it just from me: whenever Intentional chose to demo the IDW, it was invariably greeted with well-documented raving enthusiasm that compared it to the Mother of all Demoes — see again Fowler’s bliki.
+
+So, why the secrecy? I suspect several attributing factors.
+
+First, Charles could have been eager to continue this programmer’s heaven of rearing up his proverbial hen with the golden eggs in an ivory tower of his own making, free of the worldly constraints that usually "`plague`" developers, like the cold, harsh feedback of actual users.
+I’ve heard that one of Charles’ people said Intentional could keep up their burn rate (as it was at the time) for another 28 years or so, before money was projected to run out.
+I’m sure that if Eric Ries were dead he’d be spinning in his grave upon hearing that...
+
+Second, I think that Charles genuinely believed/believes that the IDW and the concepts it represents will change the entire face of software development and indeed the world.
+The reactions to the controlled demo-outings would certainly seem to corroborate that.
+This could also mean that he was unwilling to put it out into the world at anything less than a premium price — the license fees that I’ve heard certainly imply that.
+
+Thirdly, there is a problem with a company made up of staggeringly smart people — one that I ran into on a joint project with Intentional: smart people rarely develop the skill to explain their smarts in a clear way that’s understandable for people not already operating on or near their level.
+Charles himself is certainly able to do just that: you don’t rise to a high position within Microsoft solely on the basis of being smart.
+
+But apparently he hasn’t quite held his Intentional employees to the same standards.
+This leads to the IDW being unusable for normal folks.
+Not only is the amount of concepts you need to understand and understand really well quite large, the documentation was (at the time) sparse (if it even existed) and not really helpful.
+Think here of something that has about the same learning curve of a sane LISP (like Scheme or Clojure), but times a non-trivial factor because you’re mentally operating in several domains at the same time.
+In my experience with IDW, the 80/20 rule doesn’t really apply, but is replaced by a Turing tarpit.
+
+To get a whiff of this complexity, you could read Chapter 22 (PDF-p. 539-) of Markus Voelter’s DSL Engineering book.
+More evidence is my utter inability to change anything meaningful(ly) in the not-too-complex domain that Intentional implemented for us in the IDW.
+I think it’s fair to say that I’m not a novice at this stuff (language engineering, DSLs, code generators), so it’s a bit of a tell-tale that a couple of weeks is not enough to get a working (albeit basic) knowledge of the IDW at all, let alone independently.
+
+I suspect that Intentional, and especially Charles, where aware of this, and chose to go the "`Secret Weapon Underground Route`" because of it: instead of working towards a GA version, they simply hired themselves out as high-end consultants for e.g. DARPA projects, in which all the usual type of requirements for enterprise software that Intentional most likely had no love for conforming to, don’t apply anyway.
+
+I find the premise of the IDW hard to marry up with the intention (!) in the press statement about contributing to productivity apps.
+It might be my lack of imagination but it’s hard to envision a product like the IDW in a setting where either the domain is small and/or quite vague, and to see the added value of using the IDW that really does justice to what Intentional have accomplished in creating the IDW.
+
+Have Charles and Intentional simply grown tired of being underground and neither seeing the recognition that they think they deserve, nor seeing a possibility to simply reap the benefits with a GA release of the IDW and a potential subsequent IPO? Have they realised that the field of language workbenches is both every-expanding and at the same time continuing to not deliver in its promises? I can only guess at the reasons, unfortunately.
+
+So, what will happen with Intentional Software’s IP: will the Intentional Domain Workbench finally be revealed to the world at large in all its splendour, or will it go the way of Oslo, i.e.: nowhere...
+
+Or will Microsoft with Intentional Software actually achieve what the press statement purports, namely contribute significantly to productivity apps? In that case, will we see something like the IDW but in an incarnation that’s simplified (or "`dumbed down`" if you will) enough that it’s actually usable for normal folks like you or me? I certainly hope so, but at the same time I’m not holding my breath.
