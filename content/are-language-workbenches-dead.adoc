@@ -1,0 +1,80 @@
+= Are language workbenches dead?
+
+https://medium.com/@dslmeinte/are-language-workbenches-dead-4b05d1698d3c[Originally published] on June 28th, 2017.
+
+For many years I’ve been intrigued by the concept of language workbenches and the promise they hold for domain modelling and model-driven engineering.
+I’ve helped organise the Language Workbench Challenge and even participated in it with my very own language workbench: Más — which stands for Model-as-a-Service.
+
+In case you’re scratching your head: Martin Fowler coined the term somewhere in 2005 to describe a class of tools that allow you to create DSLs, together with an IDE.
+He described it as "`the killer-app for DSLs`" because it should make it "`easy`" for a large class of software developers to create their own DSLs, without needing to have a lot of knowledge about language engineering (think: parsing, the Dragon Book, IDE plug-in development, metaprogramming, etc.), which they then would use to do model-driven software development in their everyday projects, making them wildly more productive along the way.
+
+So, seeing this initial hype, where are they now?...
+Of the three examples of language workbenches that Fowler gave, one (MPS) has gained some traction, one is bought by Microsoft (see my previous blog where I surmise where that most likely leads to) after not ever having been GA-released, and the other one doesn’t even exist anymore.
+The LWC has seen plenty of contenders over the years, some sparkling new, some existing longer, or not anymore, but none of these products have gained the widespread traction that we in the software language engineering field would have expected.
+
+To be fair, there’s a fair number of language workbenches (or things that could be seen as such, when viewed from the correct angle) and enjoy some degree of real-world use — MPS, Xtext, Meta-Edit+, Spoofax, Rascal, Racket are to me the foremost examples.
+
+In this blog, I’m trying to figure out why language workbenches aren’t used more and how we could do better.
+Feel free to leave comments, especially if you don’t agree!
+
+A language workbench is essentially a tool to help with doing model-driven engineering, which means that we should be trying to model as much as possible of the thing that we’re trying to build in a rigorous way, and then somehow "`execute`" that model.
+
+So, seeing that model-driven software development is hugely popular, why aren’t language workbenches?! Oh wait...
+If you put it like this, it looks like we’re wondering why creating content for the Microsoft Zune didn’t turn out to be a veritable goldmine.
+
+In my experience, explicit introduction of model-driven techniques is met with quite some resistance, because (1) it adds complexity without immediate pay-off, and (2) it is perceived by individual developers, IT departments and consultancy firms alike to threaten their business model.
+This means that languages workbenches are difficult to sell to anything where either developers or account/sales managers are boss.
+
+In a personal anecdote: I once was trying to "`sell`" model-driven to a "`suit`" at one of my former employers, who concluded "`...so if we’re doing your thing, then I’m going to sell fewer hoursthere’s the door!`" — note the distinct lack of interpunction there...
+(Suffice it to say, I left that company soon after to become an independent consultant.)
+
+In stark contrast, "`selling`" the model-driven approach to "`the business`" is often really easy.
+Although business analysts and domain experts are typically not developers or have a programmer’s background, they’re often quite smart and capable of doing surprisingly intricate things with, say, Excel.
+The operative word here is "`empowerment`": give the business people tools with which they can effectively do a lot of the software development work, and they’ll be clamouring to use it.
+
+So, why is it so hard to get in the door via this route, in reality? A few practical reasons: (1) our own networks are mainly comprised of fellow developers, and (2) IT departments like to stick with tried-and-tested development practices with horrendous productivity.
+However, I find there’s one intrinsical reason for language workbenches not being adopted more enthusiastically, namely: lack of integration with existing software development practices.
+
+Too often, language workbenches suffer from a tendency to want to start from first principles in combination with a "`this is all you need`"-thinking.
+Unfortunately, almost every situation in real life has to deal with a pre-existing developer culture, and practices — also known as "`this is how we do things here`".
+The juxtaposition of these characteristics tends to be a poor match (like winegums and a good scotch).
+This means that whatever comes out of and is done with the language workbench is difficult to "`drop in`".
+
+My own attempt at rul\^H^H^Hchanging the world by means of a language workbench was certainly guilty of this particular crime: e.g., I hadn’t come around yet to implementing a templating mechanism to generate text from DSL contents ("`prose`").
+Given the Web-based nature of Más, developers would only have access to generated code through what we would call these days a microservice.
+
+Looking at the more successful language workbenches, we see that they all have put effort into integrating into existing situations.
+E.g., even though MPS is a standalone product, it comes with Git support for DSL prose, and DSL implementation can be exported as plugins for IntelliJ/IDEA.
+Xtext, Spoofax, and Rascal are firmly ensconced in the Eclipse ecology, by being as well as producing Eclipse plugins.
+More recent efforts in the software language engineering field like the Language Server Protocol coming out of Visual Studio Code, and the new Theia IDE, revolve around adding language extensions to an IDE that feels thoroughly familiar in the first place to developers, and has all the usual bells and whistles.
+
+As for the "`other`" existing language workbenches (the Intentional Domain Workbench, Meta-Edit+) that are really a universe unto itself: if they see use and adoption, it appear to be less in software development, and more in engineering in general.
+My guess is that engineers see software exclusively as a tool, and their software skills not as their core business that must be monetised.
+
+Next to lack of integration with mainstream software development, I see another problem with the DSL approach: even with a suitable language workbench, creating/finding and implementing a good DSL is not easy.
+This is, as always, because it’s difficult to find out what the DSL is supposed to do and look like.
+
+In fact, since you’re using the DSL to describe something of which you are also still finding out what it is supposed to do (i.e., your project), it’s probably a bit like shooting at bunnies from a drone, all of which are located in the belly of a A340 doing parabolic flights.
+Even if the mechanics of parsing theory, etc., are taken out of the equation, this requires a lot of language engineering skill, general analytic skills, and good allround software development skills and experience.
+
+There’s also the question of whether every project or even company requires its own DSL.
+To channel Eric Evans a bit: a DSL would correspond an ubiquitous language in a certain domain.
+But not all domains are a company’s intrinsic intellectual property, in which case it’s probably much better to pull something (either a DSL or a full implementation) off the shelf.
+
+In my experience, every project has the potential for one or two little DSLs to pop out, but rarely would these suffice to cover a significant part of that project, making the ROI of implementing the DSLs tenuous — at least in terms of code size and pure developer productivity: there might certainly be other factors like empowerment of stakeholders/domain experts, and long-term knowledge sharing that change the ROI story.
+
+On the other hand, typically every project — after some time — gravitates towards a certain idiom which comes about as an amalgam of company conventions, consequences of technology choices, best practices adopted or discovered, together with a politically arrived-at fusion of personal preferences of devs.
+This idiom might even be guarded by means of linters, and other build tools, as well as code reviews, but often it’s mainly a matter of discipline, hard work, and some OCD to really adhere to it.
+I see much potential for being able to define such an idiom more thoroughly and comfortably, and to feed the IDE du jour with that definition, to be rewarded with focused support for the idiom.
+Heck, someone might even find an AI angle to tack onto this whole endeavour.
+
+Unfortunately, existing language workbenches aren’t nearly good enough to be able to do this without too much effort: not just because the integration with mainstream IDEs is lacking, but also because it’s a lot of work to restrict a set of existing programming languages — e.g. JavaScript+React+Sass/Less+etc. — to a certain idiom without restricting the expressivity of the constituent base languages more than desired.
+A couple of language workbenches essentially re-implement existing languages such as Java and JavaScript, but combining and altering these implementations with e.g. React (JSX) and Sass is still a big undertaking.
+Unless your code base and your project happen to be huge — which incidentally diminishes the chance of it adhering to a "`narrow`" idiom!
+
+To conclude: language workbenches aren’t dead, they just smell funny...
+
+In my opinion, the currently-popular language workbenches lack adequate integration with existing, mainstream IDEs and aren’t good enough to make language engineers redundant (enough) to get a decent traction among developers.
+However, I still think they have a huge potential, especially when targeting "`the business`" (i.e., stakeholders, domain experts, and business analysts) with current-gen language workbenches.
+Furthermore, mainstream IDEs might acquire language workbench-like capabilities, which could be very exciting.
+

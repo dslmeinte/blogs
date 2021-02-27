@@ -1,4 +1,4 @@
-# Intentional Software bought by Microsoft
+= Intentional Software bought by Microsoft
 
 https://medium.com/@dslmeinte/intentional-software-bought-by-microsoft-2606e6eb1106[Originally published] on April 20th, 2017.
 
@@ -70,3 +70,4 @@ Have Charles and Intentional simply grown tired of being underground and neither
 So, what will happen with Intentional Software’s IP: will the Intentional Domain Workbench finally be revealed to the world at large in all its splendour, or will it go the way of Oslo, i.e.: nowhere...
 
 Or will Microsoft with Intentional Software actually achieve what the press statement purports, namely contribute significantly to productivity apps? In that case, will we see something like the IDW but in an incarnation that’s simplified (or "`dumbed down`" if you will) enough that it’s actually usable for normal folks like you or me? I certainly hope so, but at the same time I’m not holding my breath.
+
