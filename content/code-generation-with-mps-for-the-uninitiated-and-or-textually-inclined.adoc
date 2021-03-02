@@ -1,0 +1,57 @@
+= Code generation with MPS for the uninitiated and/or textually inclined
+
+https://medium.com/@dslmeinte/code-generation-with-mps-for-the-uninitiated-and-or-textually-inclined-a7c98784ca95[Originally published] on January 16th, 2018.
+
+Recently, I’ve had my first stint with MPS and for the most part, it’s been a hoot.
+The "`most part`" bit binds to the code generation side of things, which I’ve found quite counter-intuitive, especially coming from a background where code generation is typically a model-to-text transformation rather than a model-to-model one.
+
+First of all, the https://confluence.jetbrains.com/display/MPSD20172/Generator[reference documentation for generation] is — as is often the case with these tools — of the "`you can read it well once you already understand all of it`"-kind.
+// replace link with?: https://www.jetbrains.com/help/mps/mps-generator.html
+That’s hardly avoidable since this documentation also strives for completeness, but it makes it not so suitable for learning about code generation in MPS.
+On the other hand, the tutorials (such as these) are decent enough but don’t cover a lot of ground and don’t always explain things beyond "`do this, then do this`".
+
+I’m not saying this to harp on JetBrains — who are doing an awesome job building MPS and promoting it — but to tell you that a little perseverance is key here.
+
+Secondly, some of the naming is a bit confusing at times.
+This is interesting because I happen to know that the people working on MPS generally have a good to excellent mastery of natural languages such as English.
+
+Thirdly, each projectional-based tool has to deal in some way with how to specify templates for abstract syntax trees rather than for plain text.
+The convenient thing about text is that you can think of your AST as "`collections of character sequences`", with collections being files and lines in them, possibly with some indentation sugar (https://www.eclipse.org/xtend/documentation/203_xtend_expressions.html#whitespace-handling[like in Xtend]), irregardless of the output language.
+Of course, doing this gives you no guarantees about whether the generator will produce correct (e.g.: compilable) output, but in my experience this is not so much of a problem provided you have a performant but sufficiently thorough CI setup.
+
+MPS even makes it more challenging for itself because it supports language composition, so also composition of projection and generators, and chooses to use a language’s projection (i.e., its editor definitions) to specify generator output with.
+Much of my initial, slow ramp-up had to do with how these choices influence generator implementation.
+
+The way that MPS chose to do templating is to _annotate_ a piece of prose in the target language with _macros_ that specify how to replace certain aspects of the AST underlying that prose (properties and references through like-named macros), how certain pieces of the AST can be lifted out (as _template fragments_), and copied to another location (again so instructed by macros at the target site), or how certain pieces are to be repeated based on some query of the input model (the `$LOOP` macro).
+
+Those pieces of prose have to be correct in the target language, which means that templates can seem rather large and cumbersome in MPS.
+It also means that you always have to look a bit cross-eyed at your template code: with and without the macro annotations.
+In textual code generation you have to squint similarly, but there’s noise in terms of "`superfluous`" pieces of template code which are not part of any template fragments.
+
+For your convenience I’ll present my "`learnoids`" below, in semi-random order.
+This is stuff that I realised but didn’t find stated explicitly enough — at least: for me! — in the documentation or tutorials.
+Hopefully, you’ll be able to save some time with this.
+
+. You can switch on storing _transient models_ to see how the generation progresses: this is switched on and off by the small "`T`" in the lower right corner of the MPS window.
+. The "`root`" in **root mapping rule** means that the output of the template will be a root, not that it has to take a root as input.
+. A **mapping label** must not only be _defined_ but also _populated_.
+    You do this by wrapping the node you want to be able to refer to in a `$LOOP$` macro.
+. Generation is an iterative process: it will iterate over the model before each generation step, and "`shop around`" in the generators of all languages involved (i.e., used or depended on) to see how to transform each root.
+    Generation will stop when all output roots of a step are text, or when that condition wasn’t fulfilled for a certain number of steps — usually 10.
+. Roots for which no transformation was found, are carried over to the next step.
+. To prevent a root from making it into the next generation step, use an **abandon root rule**.
+    It’s e.g. necessary to use this if you have root mapping rules that act on descendants of roots, but not for the roots itself.
+. Mapping to text is done through a **TextGen** component.
+    This is typically the last step in generation, which is why such a component maps only roots to files.
+    Output cannot be "`piped`" to some other generation step, or equivalently: TextGen components cannot be called — instead, TextGen instances of concepts for which a TextGen component is defined are automatically picked up by the generator.
+. Also, you can only have one TextGen component per concept.
+    However, you can always create "`dummy`" concepts which wrap an instance of another concept as child, to create multiple files per instance.
+. Having said that: if you feel you need to work around the limitations of TextGen, you might be trying things the wrong way.
+    E.g., if you want to embed SQL statements, specified through some query language implemented in MPS, into Java code, you’d like to define TextGen components for the concepts in that query language and "`call`" these from the templates for the Java code.
+    The _right_ way to do this, would be to define an extension of `BaseLanguage` with an `SQLStatement` concept, instances of which can be plugged into the `PreparedStatement.query(..)` method.
+    Now you can define a TextGen for `SQLStatement` which is then automagically picked up during generation.
+. A `template switch` model can just have one, non-polymorphic case.
+    As such, it acts as a simple function that you can call from another template using the `$SWITCH$` macro.
+
+I hope the above was useful for you.
+
