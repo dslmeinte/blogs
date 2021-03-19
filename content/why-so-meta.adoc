@@ -1,0 +1,39 @@
+= Why so meta?
+
+https://medium.com/@dslmeinte/why-so-meta-d98b880a99f[Originally published] on February 27th, 2018.
+
+Lately, I’ve been doing a lot of work in Jetbrains’ language workbench MPS.
+Even though the initial learning was a bit slower than expected, this has been a very happy experience so far.
+Especially implementing actual languages with it has been thrillingly simple and productive, and I got the hang of writing model-to-model transformations pretty quickly as well.
+The part of the product which "`pushed back`" the most was generating actual code, Java or otherwise — see https://github.com/dslmeinte/blogs/blob/main/content/code-generation-with-mps-for-the-uninitiated-and-or-textually-inclined.adoc[a previous blog].
+
+Of course, it’s the premise of a projectional language workbench that implementing languages takes away one critical hurdle — writing down a grammar for your language that fits the parsing tech _du jour_ — and allows you to make your language look *good* at the same time, but MPS actually delivers on that.
+
+This got me thinking a bit about the focus of the field of language engineering.
+It seems to me that we language engineers are talking an awful lot about how our tools are or should be working.
+You could even call that _meta-language engineering_: instead of (primarily) building actual languages for actual users, we’re (primarily) building tools to build languages with — at least, sometimes we seem to prefer that.
+This is akin to regular Java developers often making Pull Requests on the OpenJDK repository.
+
+I understand that the _academic_ focus lies there (as it should): it’s about research, and not about providing immediate business value to any customer.
+(In a sense, we — the practitioners — are the customers of academic research, although we’re traditionally quite bad at reaping the benefits.) Unfortunately, this also means that maturing an academic prototype into a reliable product that can sustain actual software development tends to fall by the wayside.
+This is evidenced e.g. by the average make-up of participants of the Language Workbench Challenge: many academically-grown submissions often participate only once, while the industry-based ones — such as MPS and Xtext — participate often.
+
+I also understand that especially in our field it is very tempting and often relatively easy to "`go the meta way`": if we recognise a pattern occurring in enough languages, we’re naturally equipped to reify that pattern into a first-class construct in whatever tools we’re using to build our customer-centric languages.
+Sure, there is a longer-term benefit to our users in doing that since these constructs should make our tools more powerful, and ourselves more productive and effective in building languages.
+
+My point is: there’s a balance to be struck here, and I think our professional niche often errs on the side of meta.
+I’m perfectly guilty of that myself — see also my xref:post-mortem-for-Más.adoc[post-mortem on my own language workbench, Más].
+I also know plenty of fellow language engineers that, at some point in their career, have apparently thought something like "`Fsck <existing tool>, I’ll build my own which is so much more awesome!`", and actually proceeded to build their own language workbench, so I might not be a statistical anomaly in this.
+
+Tools in the language engineering arena have improved quite a bit in recent years: MPS and Xtext are going steady, Scala and Haskell are catering nicely for internal DSLs, and the years of `lex` and `yacc` are long gone as well.
+Can it really be the case that all the existing tools out there are perpetually inadequate for any given project?
+
+Personally, I also like the meta-side of things slightly more than pushing the limit on providing the best solution for my customer — somehow, it’s more satisfying to feel smart on a meta-level.
+But my value as a language engineer does not lie (primarily) in how well I can hop across meta-levels: my value is determined by how well I can provide my customers with tooled DSLs that empower them to achieve what they’re after more quickly and more effectively.
+
+In fact, I’ve come to think of DSLs as "`nothing more`" than _data + tooling_.
+Even though language engineering often has its own specific challenges, there’s no reason why we absolutely, 100% _require_ a language workbench to build languages at all.
+Of course, a language workbench allows you to get there a lot quicker, but that also means that using a seemingly imperfect language workbench is still a lot better than taking a sabbatical to first build that Perfect Language Workbench (as if!…) instead of building the language you can actually make people happy with.
+
+If there’s a call to action lurking underneath this rant, I guess it could be this: go and find a nice domain (maybe even a "`business`", i.e. non-technical one), create a nice DSL for it, make sure it’s easy to work with (simple installation, and/or packaged as a Web or even mobile app), and that it’s easy to integrate with and to extend, and see who you can make happy with it.
+

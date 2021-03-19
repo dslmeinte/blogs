@@ -2,6 +2,8 @@
 
 All my blogs in one spot:
 
+* [Why so meta?](content/why-so-meta.adoc)
+* [Post-mortem for Más](content/post-mortem-for-Más.adoc)
 * [Code generation with MPS for the uninitiated and/or textually inclined](content/code-generation-with-mps-for-the-uninitiated-and-or-textually-inclined.adoc)
 * [Are language workbenches dead?](content/are-language-workbenches-dead.adoc)
 * [Intentional Software bought by Microsoft](content/intentional-software-bought-by-microsoft.adoc)
