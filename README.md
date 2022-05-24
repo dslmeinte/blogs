@@ -2,6 +2,7 @@
 
 All my blogs in one spot:
 
+* [Beleid voor digitalisering (in Dutch)](content/reactie-op-oproep-Ron.adoc)
 * [Why so meta?](content/why-so-meta.adoc)
 * [Post-mortem for Más](content/post-mortem-for-Más.adoc)
 * [Code generation with MPS for the uninitiated and/or textually inclined](content/code-generation-with-mps-for-the-uninitiated-and-or-textually-inclined.adoc)

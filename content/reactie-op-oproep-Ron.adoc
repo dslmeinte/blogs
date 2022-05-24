@@ -1,0 +1,156 @@
+# Beleid voor digitalisering
+
+Gepubliceerd: 24 mei 2022
+
+Het afgelopen jaar heb ik met veel plezier gewerkt aan het Corona-project van het Ministerie van VWS, zeer capabel en ongekend open en transparent geleid door Ron Roozendaal.
+Ondertussen is Ron *Kwartiermaker Digitalisering* geworden, waar hij ongetwijfeld veel goeds aan het doen is.
+In die rol van kwartiermaker heeft hij een open oproep gedaan om suggesties te doen over hoe invulling gegeven kan worden aan de https://www.rijksoverheid.nl/documenten/kamerstukken/2022/03/08/kamerbrief-hoofdlijnen-beleid-voor-digitalisering[kamerbrief Hoofdlijnen beleid voor digitalisering (kenmerk 2022-0000123877)].
+
+Zoals hij zelf al zegt: "`Twintig pagina's beleid, ga er maar aan staan.`"
+Ik moet bekennen dat ik die 20 pagina's niet in volledig detail gelezen heb.
+Wat me vooral opviel is dat er veel doelen, thema's, onderwerpen, en kreten besproken worden: het _Wat_, _Waarheen_, en _Waarom_.
+Het _Hoe_ en _Waarvandaan_ vind ik daarentegen wat minder vertegenwoordigd.
+Hieronder staat een aantal suggesties, met de belangrijkste voorop.
+
+
+## Stel de burger centraal
+
+Dat is niet alleen eigenbelang, denkend vanuit mezelf als burger in plaats van als ZZP-end ondernemer.
+Er is een aantal duidelijke redenen om de burger centraal te stellen bij de digitalisering van de overheid.
+
+Ieder kind weet dat aan het uiteinde van de wip-wap je het meest los komt.
+Om de grootst mogelijke maatschappelijke impact te hebben, moet digitalisering dus op zoek naar de wip-wap met het zwaarste uiteinde.
+Onder de wip-wappen met de overheid aan de ene kant, is dat dan die met alle burgers op het stoeltje - of je nou denkt in aantallen, in geldstromen, of in zaken die voor en door ze geregeld worden.
+
+Het bedrijfsleven is weliswaar cruciaal voor de economie, maar de maatschappij bestaat uit mensen, niet uit bedrijven.
+Bedrijven bestaan trouwens ook uit heel veel mensen, die ook allemaal ergens burger zijn.
+Dus een aanzienlijk deel van het bedrijfsleven zit ook weer op het uiteinde van de overheids-burger-wip-wap.
+Bovendien is elke burger is zowel directe klant, en aandeelhouder (en soms zelfs bestuurslid) van BV Nederland.
+Circa 1 op de 8 mensen is ook nog eens werknemer van BV Nederland.
+
+// Ik snap wel dat het vaak makkelijker is om met -vooral grote- bedrijven te werken in plaats van individuele burgers.
+// We moeten waken voor oneigenlijke abstracties: elk mens is anders, en pluriformiteit kun je niet uitvlakken door even een zonnebril op te zetten.
+// Zoals een beroemde Nederlandse "`oer-IT-er`" zei:
+// "The purpose of abstracting is not to be vague, but to create a new semantic level in which one can be absolutely precise."
+// -- Edsger Dijkstra (https://www.goodreads.com/author/quotes/1013817.Edsger_W_Dijkstra[bron])
+
+Naast deze bedrijfseconomische reden, is er ook een moreel-ethische reden om de burger centraal te stellen.
+Voor de meeste mensen is het een ondoenlijke zaak om zich voldoende in alle -vaak onnodig moeilijk beschreven- materie in te lezen, en het "`juiste ding`" te doen.
+De rechtvaardiging vanuit de overheid is dan vaak "`U had kunnen - en dus _moeten_ - weten dat...`".
+Dit is voor veel hoogopgeleiden al een probleem, laat staan voor het meerendeel van de burgers die dat niet zijn.
+We realiseren ons wellicht ook te weinig dat veel mensen effectief laag- of zelfs ongeletterd zijn (in het Nederlands).
+Bovendien heeft niet iedereen iemand in hun netwerk die daarmee kan en wil helpen.
+
+Daarnaast: de _uitlegbaarheid_ van beleidsuitvoering -waarom iets op een bepaalde manier gebeurd is- is meestal bar slecht - met als ultieme smoes "`dit is waar de computer mee kwam`".
+(Als überhaupt de moeite genomen wordt om iets van een rechtvaardiging te geven.)
+Als uitvoerenden in de fout gaan, is het in de praktijk aan de burger om dat te constateren, en daarover in de pen te klimmen.
+In de praktijk wordt de burger dus feitelijk geacht het overheidsbeleid minstens zo goed te kennen als de uitvoerenden van dat beleid.
+Vaak genoeg wordt zo'n uitvoeringsfout simpelweg op de gedupeerde afgewenteld: die moet het effect ervan maar het hoofd bieden, en zelf een fatsoenlijke afwikkeling "`managen`" - al dan niet met behulp van een gang naar de rechter.
+De uitvoerende lijkt er gemakshalve maar van uit te gaan dat de burger fout zit tenzij het tegendeel bewezen wordt.
+// Het indienen van een bezwaar moet een middel zijn om toch nog iets recht te kunnen zetten dat dat al helemaal ontspoord is, niet als een manier om "`bugs`" te rapporteren.
+De Toeslagenaffaire toonde maar weer eens aan dat de weg naar de hel geplaveid is met (door de bank genomen) goede bedoelingen.
+// Onverschilligheid biedt meestal genoeg voedingsbodem voor soortgelijke uitwassen - kwaadwil is niet eens een noodzakelijke voorwaarde.
+Hierover is uitgebreid geschreven door o.a. Marlies van Eck: zie https://www.openrecht.nl/auteurs/f86783f1-7bfb-4dbc-923b-6ae5f2a0a0ce/[haar publicaties], en https://pure.uvt.nl/ws/portalfiles/portal/20399771/Van_Eck_Geautomatiseerde_ketenbesluiten.pdf[haar proefschrift].
+
+// In de praktijk is "`het`" overheidsbeleid ook nog opgeknipt in meerdere aspecten waarvan de verantwoordelijkheid "`strak langs de lijnen`" verdeeld is over deeloverheden.
+// Dat is voor die deeloverheden wel handig, maar voor de burger vaak duidelijk minder: opgeknipt beleid heeft vaak onbedoelde accumulatie-effecten, wanneer het op het niveau van het individu bekeken wordt.
+// Het is dan in de praktijk maar weer aan de burger om met zulke accumulatie-effecten te dealen, terwijl eigenlijk de overheid moet verantwoordelijkheid nemen voor het hele beleid, en niet deelverantwoordelijkheden afwentelen op deeloverheden.
+
+Ingewikkeld overheidsbeleid dat te moeilijk of slecht beschreven is, en uitgelegd wordt, haalt de regie weg bij de burger.
+(Het haalt trouwen ook vaak genoeg de regie weg bij de overheid zelf.)
+De burger kan zo te gemakkelijk een speelbal worden, en daar moeilijk aan ontsnappen.
+
+
+## Digitalisering van beleid
+
+Wat kan - en dus _moet_ - er dan gebeuren om de burger weer centraal te kunnen stellen, zodat deze ook weer echt zelf de regie kan voeren?
+
+Het **digitaliseren van beleid** is de uitgelezen mogelijkheid om de overheid in staat te stellen om de burger in staat te stellen om weer zelf de regie te kunnen gaan voeren.
+De twee voorkomens van "`in staat te stellen om...`" in de vorige zin is geen schrijffout, maar een bewuste tweetrapsraket.
+Hier werken mijns inziens twee krachten tegen ons samen.
+
+Ten eerste kun je beleid in de vorm van wet- en regelgeving kun direct "`runnen`", althans niet zonder uitgebreide verduidelijking door domein-experts zoals juristen, fiscale experts, etc.
+In het uiterste geval moet er zelfs een rechter - een super-domein-expert, zeg maar - aan te pas komen om de uitvoering van het beleid te "`debuggen`" - achteraf, als het kwaad al geschied is.
+Om software te maken dat die wet- en regelgeving ondersteunt, moeten de ontwikkelaars dus veel interpreteren en analyseren, samen met domein-experts.
+Dat is ingewikkeld en foutgevoelig en dus bewerkelijk en tijdrovend.
+
+Ten tweede gaan de IT mijns inziens vaak te snel van beschreven beleid naar uitvoering middels processen, en software die die processen ondersteunt.
+Eigenlijk wordt daarmee beleid ondergeschikt gemaakt aan het eindproduct van de digitalisering - van "`hoe het in de praktijk werkt`".
+Juridisch gezien is dat het paard achter de wagen spannen.
+In software engineering-termen: we gaan direct van de use case naar assembly/byte code.
+Zo'n aanpak maakt de traceability - nog zo'n software engineering-term - en daarmee de uitlegbaarheid gelijk een moeilijk verhaal.
+Het kost ontzettend veel handmatig, en foutgevoelig werk om software die automatische beslisprocessen ondersteunt zó uit te breiden dat bij de uitkomst van zo'n proces uitgelegd wordt hoe die uitkomst tot stand komt, op zo'n manier dat dat ook nog eens terug te herleiden is naar wet- en regelgeving.
+
+Wat is dan wel een goede aanpak?
+Gedigitaliseerd beleid kun je wél direct kunt runnen: gegeven het gedigitaliseerde beleid, en een digitiale beschrijving van een situatie kan een geschikt systeem niet alleen automatisch een beslissing maken voor die situatie, maar die ook uitleggen door te laten zien _hoe_ dat beleid gerund is.
+Gedigitaliseerd beleid moet daarnaast expliciet geannoteerd worden met verwijzingen naar wet- en regelgeving, zowel voor traceability maar ook om te kunnen checken of de hele wet- en regelgeving gedigitaliseerd is.
+
+Dit is geenszin fictie, maar staat bekend als _wendbare wetgeven_.
+Een aantal publicaties die over deze aanpak gaan:
+
+- https://www.boomdenhaag.nl/webshop/wetsanalyse[Wetsanalyse (boek); Ausems, Bulles, Lokin]
+- https://libris.nl/boek?authortitle=mariette-lokin/wendbaar-wetgeven--9789462905528#[Wendbaar wetgeven; Mariette Lokin]
+
+Binnen de Belastingdienst is de tool ALEF ontwikkeld waarmee je wet- en regelgeving kunt digitaliseren, en die digitalisatie kunt verifiëren en runnen.
+Aan de digitalisatie zelf komt geen programmeur meer te pas: regelanalisten kunnen dat bijna helemaal zelf.
+Alleen de laatste stap om de door ALEF gegenereerde programmatuur op een server moet nog door een IT-er gedaan worden.
+Dat dat werkt wordt o.a. aangetoond door de inkomstenbelasting: de centrale rekenmodule is met ALEF gemaakt.
+ALEF wordt op steeds meer plaatsen gebruikt voor het realiseren van automatische beslisprocessen, o.a. door de gemeente Utrecht voor een digitaal https://commonground.nl/file/download/e14edf77-2991-4073-8ed2-108bc186756d/20210707-virtueel-inkomstenloket-demo.pdf[Virtueel Inkomstenloket].
+
+De successen van deze aanpak laten zien dat deze werkt, en uitvoerders in staat stellen om in kortere tijd, met minder developers, proces-ondersteunende software van hogere kwaliteit af te leveren.
+ALEF is nog niet open (source) gemaakt, maar dat is hopelijk een kwestie van tijd.
+
+
+## Zorg voor de juiste bedrijfscultuur
+
+Als je een start-up wilt starten, dan is er één advies dat telkens naar voren komt: maak vooral eerst een goed team, en begin daarna pas met het bouwen van een oplossing.
+Voor een overheid kan dat niet anders werken.
+
+Werken voor de overheid betekent tegelijkertijd ook: werken voor jezelf.
+Niet in de zin dat wat je doet ook altijd jezelf, direct of indirect, personeel raakt.
+Wél in de zin dat je de kwaliteit van dienstverlening die je zelf als burger zou willen zien of verwacht daarom ook zelf af te leveren hebt.
+
+Mijn eigen ervaring met het uitvoeren van IT-projecten voor en binnen overheden is dat niet iedere uitvoerende zich van bovenstaande doordrongen lijkt te zijn.
+Dat maakt het ook moeilijk om een _sense of urgency_ te houden: als iets vandaag niet af komt, dan is volgend jaar ook wel goed, toch?
+Niet als dit gaat over functionaliteit die nodig is voor bedrijfsvoering waar burgers direct baat bij hebben, en op zitten te wachten.
+Maar als het jou zelf niet raakt, dan is het makkelijk om het "`gewoon als werk`" te zien, dat zich ogenschijnlijk in een vacuüm voltrekt.
+Risicomijden wordt dan vanzelf een betere _career survival strategy_ dan waarde toevoegen en daarvoor risico's willen nemen.
+
+Niet dat er harder of meer gewerkt moet worden.
+Je kunt meer werk verzetten in hetzelfde aantal uren door bijvoorbeeld https://cleantechnica.com/2021/08/16/elon-musk-reveals-his-5-step-engineering-protocol/[__Elon Musk's 5-step engineering protocol__] te volgen.
+Wat in ieder geval niet handig is, is om dingen altijd "`volgens het boekje`" te doen.
+Dat boekje is waarschijnlijk geschreven in een andere context, voor een ander doel, en in een ander tijdperk.
+De enige constante is verandering, en dat geldt voor de IT dubbel zo hard.
+
+
+## Laat IT-ers zelf hun middelen kiezen
+
+De arbeidsmarkt voor IT-ers is krap, erg krap.
+Benut de IT-ers die je hebt daarom zo goed mogelijk.
+Laat ze doen waar ze goed in zijn én blij van worden - dat is heel vaak hetzelfde ding, trouwens.
+Verdoe hun tijd niet met dingen zoals vergaderingen-die-een-mailtje-hadden-kunnen-zijn, administratieve handelingen die nergens waarde toevoegen, etc.
+Geef ze hard- en software die méé- in plaats van tegenwerkt.
+Of beter: geef ze autonomie en voldoende budget om zelf de juiste keuzes voor hun bedrijfsmiddelen te maken.
+
+Belemmer ze niet in hun productiviteit uit naam van security.
+Security is niet een kwestie van zo min mogelijk toestaan en alles zoveel mogelijk dichtzetten, en "`dan is het veilig`".
+Dat werkt alleen maar in de hand dat IT-ers workarounds zoeken - én vinden! - die nog minder veilig zijn.
+Echt goede secruity is én veilig, én werpt zo min mogelijk obstakels op.
+
+Standaardisatie van tooling over een hele organisatie heen klinkt misschien wel heel aantrekkelijk voor het management, maar loopt in de praktijk meestal uit op rampen.
+Laat IT-ers gewoon zelf kiezen wat ze waarvoor willen gebruiken.
+Elders hebben we trouwens al wel afgeleerd dat een standaardisatie-om-te-standaardiseren efficiënt en effectief zou kunnen zijn - o.a. https://www.thestar.com/news/insight/2016/01/16/when-us-air-force-discovered-the-flaw-of-averages.html[bij het ontwerpen van cockpits].
+
+(Deze dingen maken het trouwens ook makkelijker voor nieuwe mensen, waaronder externen, om snel aan te kunnen haken, en produktief te zijn.)
+
+Bovenstaande is niet alleen boerenverstand, maar ook onderdeel van https://en.wikipedia.org/wiki/Theory_of_constraints#The_five_focusing_steps[Eliyahu Goldratt's Theory of Constraints]: nut de bottleneck - doorgaans de IT-ers - zo goed mogelijk uit.
+Goldratt's boek https://www.bol.com/nl/nl/p/the-goal/9200000083899664[The Goal in comic-vorm] lees je trouwens in een uurtje uit.
+Je hoeft geen fan van Elon Musk te zijn, maar je kunt niet ontkennen dat hij klassiekers zoals _The Goal_ goed kent.
+Ron heeft bovenstaande gelukkig allang begrepen, weet ik, maar het kan eigenlijk niet vaak genoeg gezegd worden.
+
+
+[NOTE]
+====
+Hoe verraderlijk digitalisering is blijkt ook wel weer uit de paginanummering van deze kamerbrief: "`pagina 20 van 20`" vanaf pagina 2...
+====
+
