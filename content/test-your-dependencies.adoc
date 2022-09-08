@@ -59,8 +59,16 @@ Having covered the use of the dependency, you'll know about the updated version 
 That saves you from inferring the incompatibility from things going wrong in a vague manner.
 
 . The tests establish *a baseline* to target when *_replacing_ a dependency*.
-Sometimes -- rarely -- a dependency needs to be replaced wholesale, e.g. because it's no longer supported, or some other dependency already has the features you find you also need.
-// TODO  add how tests are used
+Sometimes -- rarely -- a dependency needs to be replaced wholesale.
+Maybe that dependency is no longer supported, or some other dependency already has the features you find you also need.
+The existing dependency tests help you not only by guiding what you should be looking for in the substituting dependency, in terms of API, and interactions.
+They also give you a migration path, as follows:
++
+[arabic]
+.. Install the new dependency.
+.. _Copy_ the dependency tests, and alter them to use the new dependency.
+.. Once these new dependency tests are working, alter the rest of the code base accordingly.
+.. Deinstall the old dependency.
 
 Of course, these tests are another thing to create and maintain, but that rings true for all tests.
 
