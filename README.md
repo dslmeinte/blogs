@@ -2,6 +2,7 @@
 
 All my blogs in one spot:
 
+* [Test your dependencies](content/test-your-dependencies.adoc)
 * [Beleid voor digitalisering (in Dutch)](content/reactie-op-oproep-Ron.adoc)
 * [Why so meta?](content/why-so-meta.adoc)
 * [Post-mortem for Más](content/post-mortem-for-Más.adoc)

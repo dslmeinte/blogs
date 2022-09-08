@@ -1,0 +1,114 @@
+= Test your dependencies
+
+Published: September 8th, 2022
+
+Nowadays, most code bases have an extensive suit of automated tests in the form of unit tests, end-to-end tests, regression tests, etc., right?
+(*Right?!*)
+
+Most code bases use at least a couple of _dependencies_: libraries used by the part of the code that's actually running in Production, whose code is external to the code base, and which is typically downloaded through a dependency/package manager such as NPM/Yarn, Maven/Gradle, NuGet, etc.
+
+[NOTE]
+====
+A very small number of code bases that are not libraries themselves have 0 dependencies.
+To me, that's means the developers of such a code base
+
+* either suffer from a severe case of https://en.wikipedia.org/wiki/Not_invented_here[Not-Invented-Here syndrome] and just wrote everything they needed from scratch even if they could've gotten essentially the same functionality for free as an external dependency,
+* or they are very smart in their design choices to not need any dependencies,
+* or sometimes both.
+====
+
+Those dependencies are usually not covered by tests.
+This seems logical: the libraries themselves are supposed to have a decent test coverage.
+(You did check that, right? *Right?!*)
+Nevertheless, I think decent reasons exist to write at least some unit test for your dependencies.
+
+Typically, you're not using every nook and corner of any dependency: you need only a couple of features of it.
+The way you interact with the dependency to use those features is also pretty much the same throughout the entire code base.
+Tests are a good way to *document* this usage in a precise way.
+Such tests should cover things such as:
+
+. What configuration is required, and where it resides.
+
+. How to import/include the dependency in code.
+
+. How to call into the dependency from the code base, e.g.:
+
+** Which parts of the API are actually used, and how.
+** What an interaction, consisting of _multiple calls to the API_, typically looks like.
+
+. How calling the dependency can fail, e.g. on erroneous input, how to catch that failure, and then deal with that in a consistent way.
+
+You should also document separately _what purpose_ this dependency serves, how it fits into the overall architecture, and why this particular dependency has been chosen amongst the probably myriad of libraries doing more-or-less the same thing.
+
+Let's refer to explicit automated tests that document and check a dependency's behavior loosely as a _dependency test_.
+They'd probably take the form of unit tests, but could also have be an end-to-end or another type of test.
+
+Dependency tests have a number of advantages:
+
+. The tests *help with onboarding onto the code base*.
+People new to the code base can read the dependency tests to understand _in isolation_ what the dependency does, how it's used, and why it's used.
+That means they don't have to infer all this information from reading the code base they're also not familiar with.
+
+. The tests *establish a style guide* for using the dependency.
+They effectively document how everyone should use the dependency, without "`getting creative`".
+As soon as you discover you do need something not covered by the tests, you can always add tests -- after having discussed it with the team, obviously.
+
+. The tests *check for compatibility after an update*/upgrade.
+Sometimes, updating a dependency is unavoidable, especially when a vulnerability has been reported.
+Having covered the use of the dependency, you'll know about the updated version of the dependency incompatible really soon.
+That saves you from inferring the incompatibility from things going wrong in a vague manner.
+
+. The tests establish *a baseline* to target when *_replacing_ a dependency*.
+Sometimes -- rarely -- a dependency needs to be replaced wholesale, e.g. because it's no longer supported, or some other dependency already has the features you find you also need.
+// TODO  add how tests are used
+
+Of course, these tests are another thing to create and maintain, but that rings true for all tests.
+
+You could even extend this approach to the programming language you're using itself.
+In fact, I'll give an example of a test for a dependency where the "`dependency`" is a feature of JavaScript.
+(The fourth advantage doesn't really apply then, though.)
+
+As you've probably felt viscerally at some point in your programming life, JavaScript has many weird nooks and crannies.
+(In case you're doubting, spend less than 5 minutes to get a feel from this video: https://www.destroyallsoftware.com/talks/wat[Wat].)
+That makes it useful to apply the reasoning above to those idiosyncrasies.
+One of these is the behavior of the `parseInt` function in JavaScript's standard runtime library.
+
+[source, javascript]
+----
+[ '1', '2', '3' ].map(parseInt)
+    // expected: [ 1, 2, 3 ]
+    // actual: [ 1, NaN, NaN ]
+----
+
+What's going on here is that `parseInt` has _two_ arguments: the first one is a string to parse as integer, and the second one is the https://en.wikipedia.org/wiki/Radix[_radix_] with which to parse that string.
+On the other hand, `Array.map` expects a function as its first argument, which it calls for every array element with _three_ arguments: 1. the element currently iterated on, 2. the (0-based) index, 3. the entire array.
+So, in this case, `parseInt` gets called by `map` with the index as its second radix argument.
+(The third argument is ignored by `parseInt`.)
+Parsing the string `'2'` as a number with radix 1 is not going to work, hence the `NaN`, and likewise for `'3'`.
+This explains most of the unexpectedness in the answer seen above -- why parsing `'1'` with radix 0 yields 1 is outright freaky...
+
+Disregarding the mechanics necessary for defining an automated test (e.g., using Mocha), a suitable dependency test could look like this:
+
+[source, javascript]
+----
+// Use parseInt like this to parse strings to numbers (which represent integers):
+[ '1', '2', '3' ].map((str) => parseInt(str, 10))
+    // expected: [ 1, 2, 3 ]
+/*
+ * Note: call parseInt with an explicit radix argument!
+
+ * Don't use parseInt like this:
+ *      array.map(parseInt)
+ * It will produce unexpected (at least, for you) results!
+ */
+----
+
+This code shows:
+
+* What `parseInt` does, as well as what it's supposed to be doing in the future.
+* How to use `parseInt` correctly.
+* It uses plenty of documentation to explain that the obvious alternative doesn't work.
+(You could improve those comments by explaining why.)
+
+So go out, and write you some dependency tests today!
+
