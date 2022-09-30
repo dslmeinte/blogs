@@ -9,6 +9,7 @@ All my blogs in one spot:
 * [Code generation with MPS for the uninitiated and/or textually inclined](content/code-generation-with-mps-for-the-uninitiated-and-or-textually-inclined.adoc)
 * [Are language workbenches dead?](content/are-language-workbenches-dead.adoc)
 * [Intentional Software bought by Microsoft](content/intentional-software-bought-by-microsoft.adoc)
+* [Progress report for the DSL book](content/book-progress-update-2022-09.adoc)
 
 
 ## Rationale
