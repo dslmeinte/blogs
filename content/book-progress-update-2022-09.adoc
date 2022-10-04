@@ -1,17 +1,17 @@
-= Progress report for the DSL book: <em>Business-Friendly DSLs</em>
+= Progress report for the DSL book: __Business-Friendly DSLs__
 
 Published: September 30th, 2022
 
 The MEAP (Manning Early Access Program) of my book on DSLs for Manning Publications has received an update, and is now in version 9.
 The main difference from the version before is a name change.
-We -- as in: the publisher and I -- have been brooding over the title for some time and wanted something that's a bit less cheasy than "`__DSLs Made Easy__`" for a while.
-We arrived at "`__Business-Friendly DSLs__`", which we feel better reflects the content and intent of the book.
-It should also cause less confusion about the scope of the book, which focus on DSLs for business-purposes, after all.
+We, i.e. the publisher and I, have been brooding over the title for some time and wanted something that's a bit less cheasy than __DSLs Made Easy__ for a while.
+We arrived at __Business-Friendly DSLs__, which we feel better reflects the content and intent of the book.
+It should also cause less confusion about the scope of the book, which focuses on DSLs for business-purposes, after all.
 
 I've been working on this book for several years now -- since late 2018 -- and you might be wondering what's taking so long.
 This is an especially fair question if you bought it sometime over the last 2 years, and have been watching the projected publication date steadily march into the future.
 
-A lot of the delay can be explained by the work I did for the European Union Digital COVID-19 Certificate -- AKA, the **EU DCC**.
+A lot of the delay can be explained by the work I did for the European Union Digital COVID-19 Certificate -- i.e. the **EU DCC**.
 I helped design and implement an EU-wide standard for publishing and exchanging business rules governing fit-for-entry based on the EU DCC, and brought it to production -- all within roughly 2 months.
 As you might image, that "`day job`" didn't leave a whole lot of time, energy, and focus for writing, editing, processing reviewers' comments, fixing up images, etc.
 
@@ -19,7 +19,7 @@ As soon as that gig started to ramp down in earnest, my whole family finally got
 We got through that quite unscathed -- thanks to our three vaccinations -- but all this still threw me back a bit.
 
 Another part of the delay has to do with comments received during the last review round.
-A number of reviewers were not happy with the amount of "`low-level details`" that aren't specific to (implementing) DSLs but were explained quite in-depth.
+A number of reviewers were not happy with the amount of "`low-level details`", which aren't specific to (implementing) DSLs but were explained in-depth.
 An example of this is: how to set up a simple React application using a Web bundler.
 We decided to keep this sort of material but move most of it to the appendices.
 This way a reader who is "`in the know`" doesn't have to plod through it, and I can just reference the knowledge where needed.
@@ -40,7 +40,7 @@ Explaining something succinctly but still clearly understandable is a lot harder
 Summarizing most of a book (that's already not very short!) in the span of a 30-ish-page appendix that stands on its own, is much harder than the page count or actual content make it out to be.
 The upshot is that I learned to explain the material even better.
 The downside of _that_ is that I have to restrain myself in wanting to change/improve the content itself again.
-Down that road infinite loops (and delays) and madness lie...
+Down that road lie infinite loops (and delays) and madness...
 
 [IMPORTANT]
 ====
