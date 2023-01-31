@@ -1,0 +1,460 @@
+# Memoising recursively-defined functions
+
+Published: January 31st, 2023
+
+OK, let's compute some members of the famous Fibonacci sequence...once again...
+Wait, this time will be different:
+
+* We'll use TypeScript run with the new(-ish) https://deno.land/[Deno] JavaScript runtime.
+* We'll use JavaScript's `bigint` type to perform arithmetic with integers of arbitrary size.
+* Most importantly: we'll figure out *how to speed up the computation of recursively-defined functions* in a general way, using a technique called _memoisation_.
+
+[NOTE]
+====
+This blog doesn't really have anything to do with DSLs or even software language engineering.
+Instead, it "`lives`" somewhere at the intersection of Functional Programming and mathematics.
+It came about mostly as the result of a personal itch I just had to scratch.
+====
+
+
+## Part 1: the basics
+
+Fibonacci was an Italian mathematician from the 13th century.
+Among other things, he came up with a _sequence of numbers_ that's supposed to model rabbits procreating.
+This number sequence starts with the numbers 0, and 1, and each subsequent number is the sum of the previous two numbers in the sequence.
+So, the sequence starts as follows: 0, 1, 1, 2, 3, 5, 8, 13, 21 (20 for Agile people), 34 (or 100 for really Agile people), 55, etc.
+(Just how exactly you get from 0 rabbits to 1 rabbit to more than 1 rabbits was not made entirely clear by dear Fibonacci.
+ I guess you can forget about the first three numbers in the sequence, if you want things to make sense biologically...)
+
+We can view any sequence as a function which takes a natural number (i.e., a non-negative integer, like 0, 1, 2, ...),
+and returns another integer.
+If we name that function "fib", then:
+
+* fib(0) = 0, fib(1) = 1,
+* fib(n) = fib(n-1) + fib(n-2), for n &geq; 2.
+
+We're going to implement that sequence in TypeScript.
+Deno (see its https://deno.land/manual@v1.30.0/getting_started/installation[download and installation instructions]) can run TypeScript directly without the need for an explicit compile step.
+The code in this blog can be put in a file `Fibonacci.ts` which can then be run as follows from the CLI:
+
+```
+$ deno run --allow-hrtime Fibonacci.ts <1>
+```
+<1> The `--allow-hrtime` flag ensures that Deno's Performance API reports back with nanosecond (ns) precision.
+
+You can also have Deno run the code in "`watch mode`":
+```
+$ deno run --allow-hrtime Fibonacci.ts <1>
+```
+<1> Whenever the file `Fibonacci.ts` is changed (presumably because the editor saves it), Deno re-runs it from scratch.
+
+[NOTE]
+====
+You'll find the contents of `Fibonacci.ts` split into separate files in this repository, in the `src/` directory next to this blog document.
+This includes a "`bonus`" file not covered by the blog text.
+====
+
+// Before we actually define that sequence as a function in TypeScript, consider the following.
+The numbers in the Fibonacci sequence tend to get large -- larger than JavaScript's `number` type.
+Also, we're dealing with actual *integers* here, while JavaScript's `number` type is really a floating-point thingy.
+So, let's use `bigint` to define a type for natural numbers, together with a *type predicate*:
+
+
+// src/part1-basics.ts:
+
+```typescript
+type Nat = bigint <1>
+const isNat = (num: bigint): num is Nat =>  <2>
+    num >= 0
+```
+<1> `Nat` is short for `Natural`.
+<2> A type predicate is a function which tells whether a given `bigint` really is a natural number.
+
+Let's check whether the type predicate works:
+
+```typescript
+import {
+    assertEquals,
+    assertThrows
+} from "https://deno.land/std@0.173.0/testing/asserts.ts" <1>
+
+assertEquals(isNat(0n), true)  <2>
+assertEquals(isNat(-1n), false)
+```
+<1> Import the `assertEquals` function from Deno's built-in assertion library, so we can run the entire file as a test.
+<2> `bigint` literals end in an `n`, so zero as a bigint is written `0n`, etc.
+
+The type definition `Nat` doesn't restrict the `bigint` type to non-negative integers only.
+As long as we invoke the `isNat` type predicate before doing any work, that's not a problem.
+
+Let's make a type for number sequences:
+
+```typescript
+type Seq = (n: Nat) => bigint <1>
+```
+<1> `Seq` is short for "`Sequence`".
+
+Now, we can implement a function for the Fibonacci sequence:
+
+```typescript
+const fib: Seq = n => { <1>
+    if (!isNat(n)) { <2>
+        throw new Error(`The Fibonacci sequence is only defined for non-negative indices, such as ${n}.`)
+    }
+    return (n < 2n) <3>
+        ? n <4>
+        : fib(n - 1n) + fib(n - 2n) <5>
+}
+```
+<1> The type of the argument named `n` is derived from the type `Seq`, so we don't need to make that explicit.
+<2> Check whether `n` really is a natural number.
+We have to do that at runtime, because it's not possible to express a `bigint` being non-negative in TypeScript's type system without a type predicate.
+<3> (The comparison `n < 2` would work as well: `2` is coerced to `2n` in a comparison.)
+<4> Handle: n = 0 or 1 &rArr; fib(n) = n.
+<5> Handle: n &geq; 2 &rArr; fib(n) = fib(n-1) + fib(n-2).
+(Because of `n` being a `bigint` the expression `n - 1` etc. doesn't compile: in arithmetic expressions regular number literals are not coerced to bigint literals.)
+
+Let's experiment a bit with the `fib` function:
+
+```typescript
+assertThrows(() => fib(-1n), `The Fibonacci sequence is only defined for non-negative indices, such as -1.`) <1>
+
+for (let n = 0; n <= 10; n++) { <2>
+    const fib_n = fib(BigInt(n)) <3>
+    console.log(`fib(${n})=${fib_n}`)
+}
+
+const fib_37 = 24157817n <4>
+assertEquals(fib(37n), fib_37) <5>
+```
+<1> We expect an error for n = -1.
+<2> Print fib(0) &hellip; fib(10).
+<3> (Use the `BigInt` constructor to coerce a `number` to an instance of the `bigint` type.)
+<4> (Store fib(37) for later re-use.)
+<5> Calculate a Fibonacci number a little farther down the number line.
+
+The execution of the last statement above seems to take a rather long time.
+How long?
+Let's implement a `timed` function that measures how long it takes to evaluate a given `Seq` function at a given number:
+
+```typescript
+const timed = (seq: Seq, n: number): bigint => { <1>
+    const t0 = performance.now() <2>
+    const value = seq(BigInt(n))
+
+    const t1 = performance.now()
+    const elapsedInMs = t1 - t0
+
+    console.log(`${seq.name}(${n}) = ${value}  took ${elapsedInMs.toFixed(3)}ms`) <3>
+
+    return value <4>
+}
+```
+<1> (Pass in the natural number as a `number` rather than a `bigint` -- for convenience.)
+<2> Use Deno's `performance` API to mark time.
+<3> Print information about the execution of `<seq>(<n>)`.
+In JavaScript, functions can (and regularly:) have a name, which is then accessed through its `name` property.
+We print an equation using that name to be able to recognize the computation among others.
+<4> Return the result of the computation, so we can do something with that result -- e.g. `assertEquals(<actual = result>, <expected>)`.
+
+```typescript
+assertEquals(timed(fib, 37), fib_37)
+    // ==> fib(37) = 24157817  took 4171.424ms <1>
+```
+<1> The computation of fib(37) took ~4s on my machine -- this seems rather long given that the result value only 8 digits to write down!
+
+From now, we typically want to measure execution time and report about that, and compare the resulting value with the expected value through an assertion.
+
+```typescript
+const assertTimed = (seq: Seq, n: number, expected: bigint) => {
+    assertEquals(timed(seq, n), expected)
+}
+
+assertTimed(fib, 37, fib_37) <1>
+```
+<1> The previous statement can now be written as this.
+
+Of course, we can compute Fibonacci numbers really fast by using the equation in its definition as a _recipe_ (or algorithm).
+The standard way of doing that is to keep track of two subsequent values in the Fibonacci sequence at the same time.
+Let's define S(i) mathematically as a triplet (i, fib(i), fib(i-1)), for i &geq; 1.
+Then S(i+1) = (i+1, fib(i+1), fib(i)) = (i+1, fib(i) + fib(i-1), fib(i)) using the Fibonacci equation.
+So, we can compute S(i+1) from just knowing S(i).
+To kick this off: S(1) = (1, fib(1), fib(0)) = (1, 1, 0).
+(I choose to include i in the triplet, because in code we have to keep track of it somewhere/-how anyway.)
+
+The following code implements this:
+
+```typescript
+const unrecursifiedFib: Seq = n => { <1>
+    if (!isNat(n)) {
+        throw new Error(`The Fibonacci sequence is only defined for non-negative indices, such as ${n}.`)
+    }
+
+    if (n < 2n) {
+        return n
+    }
+
+    let [i, fib_i, fib_i_1] = [1n, 1n, 0n] <2>
+    while (i < n) {
+        [i, fib_i, fib_i_1] = [i + 1n, fib_i + fib_i_1, fib_i] <3>
+    }
+    return fib_i <4>
+}
+
+const fib_10 = 55n
+assertTimed(unrecursifiedFib, 10, fib_10)
+assertTimed(unrecursifiedFib, 37, fib_37)
+```
+<1> I know "`unrecursified`" is not a real word -- you know exactly what I mean, though.
+<2> Using _array destructuring_ is a nice way to make it seem like all of these assignments happen at the same time, so we don't have to think about order, nor have to use temporary variables and such.
+<3> Compute S(i+1) using the equation from the text above.
+<4> Because i now equals n, `fib_i` = fib(n).
+
+As expected, this is blazingly fast.
+Most of the reported computation time is probably spent in overhead like logging to the console.
+The downside is that we have to come up with this S(i) thing, and that you have to squint a bit to recognize the defining Fibonacci equation.
+It's also quite imperative, in the sense of: doesn't look to be in any FP-style.
+
+Can we implement the computation of Fibonacci numbers in a functional programming style, without sacrificing speed?
+It turns out we can.
+As usual, we trade off using a bit more memory against having to warm up the processor itself less.
+
+The technique we can use here is *memoisation*.
+As the name suggests, the idea is that you memorize computed values so that these can simply be looked up when needed.
+This should work well for Fibonacci, because to compute F(n) we need F(n-1) which, in turn, needs F(n-2) and F(n-3), etc.
+
+
+## Part 2: a suboptimal solution
+
+// src/part2-suboptimal.ts:
+
+Let's implement a memoising Fibonacci, as follows:
+
+```typescript
+type Memory = { [number: string]: bigint } <1>
+const memoisingFib: Seq = m => { <2>
+
+    const memory: Memory = {} <3>
+
+    const fib: Seq = n => { <4>
+        if (!isNat(n) {
+            throw new Error(`The Fibonacci sequence is not defined for non-negative indices such as ${m}.`)
+        }
+        return n < 2n
+            ? n
+            : F(n-1n) + F(n-2n) <5>
+    }
+
+    const F: Seq = n => { <6>
+        let storedValue = memory["" + n]
+        if (storedValue === undefined) {
+            storedValue = fib(n) <7>
+            memory["" + n] = storedValue
+        }
+        return storedValue
+    }
+
+    return F(m) <8>
+}
+```
+<1> Define a type for the memoisation lookup: its “memory”.
+It's a map from strings to `bigint`-s, with keys that are `bigint`-s coerced to `string`-s.
+(We'll reuse this type later on.)
+<2> To avoid confusion with the names of the arguments to the "`inner`" `fib` and `F` functions, we name the argument here `m`.
+It's anyway only used once, at the line annotated with "`**(8)**`".
+<3> Initialize the memory.
+<4> Once again, define a function `fib` to compute the Fibonacci sequence.
+<5> Call the _memoising_ Fibonacci function `F`, instead of the function `fib` itself.
+Because of _hoisting_, we can refer to `F` even though it's only declared and defined below.
+<6> Define a memoising Fibonacci function `F`.
+<7> fib(n) wasn't called before, so compute it using `fib`.
+<8> Kick off the memoising computation.
+
+Let's check whether it works:
+
+```typescript
+const fib_42 = 267914296n
+assertTimed(memoisingFib, 42, fib_42)
+const fib_78 = 8944394323791464n
+assertTimed(memoisingFib, 78, fib_78)
+```
+
+This runs fine, and in less than a millisecond on my machine.
+The source code above is still suboptimal, though.
+The `fib` and `F` functions _call each other_, which automatically means there's a lot of boilerplate code besides the definition of the Fibonacci sequence expressed by `fib`.
+If we'd wanted to memoise the computation of another sequence than the Fibonacci sequence, then we'd have to repeat that boilerplate code.
+
+Another, smaller drawback is that the memory is initialized on every call of `memoisingFib`.
+So subsequent but separate calls to `memoisingFib` don't reuse already computed values of fib.
+We'll address that later as well.
+
+Here's an idea: suppose that we somehow already had an implementation `F` of the `fib` function.
+We then could define an alternative implementation of `fib` follows:
+
+```typescript
+const fib2 = (F: Seq, n: bigint) => { <1>
+    if (!isNat(n)) {
+        throw new Error(`The Fibonacci sequence is not defined for non-negative indices such as ${n}.`)
+    }
+    return n < 2n
+        ? n
+        : F(n-1n) + F(n-2n) <2>
+}
+```
+<1> We name this function `fib2`, because it takes both the `F` and `n` arguments at the same time.
+<2> Note that `fib2` itself is _not recursive_.
+
+So, how do we come up with an implementation `F` of `fib`?
+We do already have one: `fib` itself!
+Let's try that out:
+
+```typescript
+assertEquals(fib2(fib, 37n), fib_37) <1>
+```
+<1> We can't use our own `assertTimed` or `timed` functions here, because `fib2` is not of the `Seq` type.
+
+From running the code, we see it takes a couple of seconds -- as we could've expected.
+So, this is not really an improvement performance-wise, but at least `fib2(fib, <n>)` seems to equal fib(n), so we know we should be able to get this approach to work.
+We just have to make sure that calls to `fib2` are memoised.
+We can do that as follows:
+
+```typescript
+const memoisedSeq2 = (F: (seq: Seq, n: Nat) => bigint): Seq => { <1>
+    const memory: Memory = {}
+    const mF: Seq = n => { <2>
+        let storedValue = memory["" + n]
+        if (storedValue === undefined) {
+            storedValue = F(mF, n) <3>
+            memory["" + n] = storedValue
+        }
+        return storedValue
+    }
+    return mF <4>
+}
+```
+<1> Define a function `memoisedSeq2` that takes functions like `fib2`, and returns a `Seq`.
+<2> Define an inner function `mF` that memoises `F`.
+The name stands for "`**m**emoised **`F`**`".
+<3> Compute `F` passing the now-recursive function `mF`.
+<4> Return `mF` that memoises `F`.
+
+Let's try this out:
+
+```typescript
+const memoisedFib2 = memoisedSeq2(fib2)
+assertTimed(memoisedFib2, 37, fib_37)
+```
+
+This works and executes in under a millisecond -- as we would've expected for a memoised version of `fib`.
+So, we've gone from a recursively-defined `fib` function to a `fib2` function that's not recursively-defined and that we can memoise using the _higher-order function_ `memoisedSeq2`.
+Moreover: once we have a memoised version, the memory persists over subsequent calls.
+That means we fixed the problem alluded to earlier as well.
+
+[NOTE]
+====
+A **h**igher-**o**rder **f**unction (HOF) is a function that takes a function as an argument (usually one, but could be more), and returns another function but with the same type signature.
+Typically, the returned function is some kind of “modification” of the function passed in.
+====
+
+
+## Part 3: a (slightly) better solution
+
+This is pretty close to what I'd like to see, but there's still room for improvement.
+I'm not entirely happy with the signature of `fib2`: it doesn't look enough like a `Seq`, to my taste.
+We can fix that as follows:
+
+
+// src/part3-better.ts:
+
+```typescript
+const fibLifted = (F: Seq): Seq => n => { <1>
+    if (!isNat(n)) {
+        throw new Error(`The Fibonacci sequence is not defined for non-negative indices such as ${n}.`)
+    }
+    return n < 2n
+        ? n
+        : F(n-1n) + F(n-2n) <2>
+}
+```
+<1> Define a function that takes a `Seq` and returns a `Seq`.
+The postfix `Lifted` indicates that the `fib` is "`lifted`" to be another sort of function than a recursively-defined `Seq` function.
+<2> Call the `F` sequence instead of `fibLifted` (or some other function).
+
+Note in the above code that the code for `fibLifted` is almost the same as for `fib`.
+The differences are:
+
+* On the first line, `n => &hellip;` gets prefixed with `(F: Seq): Seq =>`.
+(If you want, you can think of it as a magic incantation of sorts.)
+* On the second-to-last line, `F` is called instead of `fib`.
+
+Let's make a separate type for "`lifted sequence functions`", and check that `fibLifted` is of that type:
+
+```typescript
+type LiftedSeq = (seq: Seq) => Seq
+
+const fibLifted_typecheck: LiftedSeq = fibLifted <1>
+```
+<1> No compiler error.
+
+Define a function `memoised` that memoises a `LiftedSeq`, as follows:
+
+```typescript
+const memoised = (F: LiftedSeq): Seq => {
+    const memory: Memory = {}
+    const mF: Seq = n => {
+        let storedValue = memory["" + n]
+        if (storedValue === undefined) {
+            storedValue = F(mF)(n) <1>
+            memory["" + n] = storedValue
+        }
+        return storedValue
+    }
+    return mF
+}
+```
+<1> Recursively call the lifted sequence `F` with the memoised version `mF`.
+That results in a `Seq` which we can evaluate at `n`.
+This is the only place where the code of this function body differs from that of `memoisedSeq2`, because of the different type signature of `memoised`.
+
+Let's check whether this works:
+
+```typescript
+const memoisedFib = memoised(fibLifted)
+assertTimed(memoisedFib, 42, fib_42)
+assertTimed(memoisedFib, 78, fib_78)
+```
+
+Again, this executes in no time at all.
+Moreover, the approach works for all `Seq` functions, whether they're recursively-defined or not.
+Also, subsequent computations of a memoised function are now more performant because the memory persists.
+
+One more thing: what if we had a `LiftedSeq` but don't _want_ to memoise it for some reason?
+How do we call it then?
+The "`trick`" is to implement another HOF that calls `F` without memoisation, as follows:
+
+```typescript
+const identity = (F: LiftedSeq): Seq => {
+    const f: Seq = n => F(f)(n)
+    return f
+}
+
+assertTimed(identity(fibLifted), 10, fib_10)
+```
+
+
+## TL;DR
+
+Functions that are defined recursively, such as the Fibonacci sequence, are not trivial to transform.
+One transformation we'd like to perform on such functions is to _memoise_ them, so we can make their computation performant (at the expense of some memory).
+We'd like to use a **h**igher-**o**rder **f**unction (HOF) to memoise a given function, but the recursive definition prohibits that.
+
+A general solution is to **"`lift`"** functions.
+Suppose you have a function `f` with signature `(u: U) => V` which calls itself recursively.
+Let's abbreviate as a type `FT` = `(u: U) => V` -- where `FT` stands for **F**unction**T**ype.
+Lifting `f` to `liftedF` with signature `(F: FT) => FT` happens at the syntax level:
+
+* Add the prefix `(F: FT): FT =>` to the function's definition.
+* Replace recursive calls to `f` with calls to `F`.
+
+Lifted functions (`liftedF`) can then be easily transformed -- specifically: memoised -- using a HOF.
+

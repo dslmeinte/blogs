@@ -10,6 +10,7 @@ All my blogs in one spot:
 * [Are language workbenches dead?](content/are-language-workbenches-dead.adoc)
 * [Intentional Software bought by Microsoft](content/intentional-software-bought-by-microsoft.adoc)
 * [Progress report for the DSL book](content/book-progress-update-2022-09.adoc)
+* [Memoising recursively-defined functions](content/fibonacci/HOFs-for-recursively-defined-functions.adoc)
 
 
 ## Rationale
