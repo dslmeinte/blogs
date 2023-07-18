@@ -39,7 +39,7 @@ The code relies on Denofootnote:[https://deno.land/].
 
 First, I'll go back to what "`running a program`" means in our case:
 
-image::img/program-execution.svg[align="center"]
+image::img/program-execution.png[align="center", height=200px]
 
 In this diagram, **__P__** stands for the **p**rogram to execute, **__I__** for the **i**nput data, and **__O__** for the **o**utput data.
 The program is written in some (combination of) programming language(s).
@@ -54,7 +54,7 @@ All this means that the "`runner`" is essentially an _evaluation function_:
 evaluate : (P, I) mapsto O
 ++++
 
-To make this even more mathematical, let's denote the space of all programs as _E_ (for **E**xpressions -- I'll explain later), the space of all inputs _and_ outputs as _V_ (for **V**alues).
+To make this even more mathematical, let's denote the space of all programs as _E_ (for **E**xpressions -- I'll explain later), and the space of all input data _and_ output data as _V_ (for **V**alues).
 So, now I can write:
 
 [stem]
@@ -66,7 +66,7 @@ evaluate : E times V -> V
 It's quite natural and logical that any value has a representation in _E_ as well, so I can assume that V is a subset of E: stem:[V subset E].
 So, the diagram should really be as follows:
 
-image::img/expression-evaluation.svg[align="center"]
+image::img/expression-evaluation.png[align="center", height=200px]
 
 The evaluation function is __endomorphic__footnote:[Wikipedia: https://en.wikipedia.org/wiki/Endomorphism] in its first argument: a pair of an expression and data turns into an expression again.
 Mathematicians probably don't consider this _true_ endomorphism, but I don't care about no stinkin' mathematiciansfootnote:[I'm (a recovering) one myself, so I'm allowed to say that.] `;)`
@@ -74,7 +74,7 @@ Mathematicians probably don't consider this _true_ endomorphism, but I don't car
 
 == A simple programming language
 
-To make things concrete, I'll define a simple programming language, and mold it into a shape that's suitable for doing partial evaluation with.
+To make things concrete, I'll define a simple programming language, and mold it into a shape that's suitable for doing partial evaluation.
 
 === The language's specification
 
@@ -94,7 +94,7 @@ The empty array `[]` is truthy.)
 
 Note that evaluation always succeeds, and never throws an error.
 If that weren't the case, the _evaluate_ function wouldn't be a true function, but a _partial_ function.
-It also means that it doesn't matter in what order sub expressions (in the form of operands) are evaluated.
+It also means that it doesn't matter in what order sub-expressions (in the form of operands) are evaluated.
 
 In addition to these operators, the language has the following _literals_:
 
@@ -142,7 +142,7 @@ const isValue = (value: unknown): value is Value => <1>
 [NOTE]
 ====
 I positively _hate_ statement-terminating semicolons.
-TypeScript gives the opportunity to elide these virtually everywhere, and I happily take that offer.
+TypeScript gives me the opportunity to elide these virtually everywhere, and I happily take that offer.
 ====
 
 Then, I implement the operators:
@@ -209,24 +209,24 @@ const evaluate = (expr: Expr, input: Value): Value => {
     }
 }
 ----
-<1> Any value evaluates to itself.
+<1> Any value evaluates to itself -- on other words: `evaluate` is __idempotent__ on values.
 <2> If `expr` is not a value, it must be an operator, so I know `expr` is an object that implements either the `At`, the `BinOp`, or the `If` type definition.
 <3> TypeScript warns that the `binOp` case might fall through to the next case.
 Even though that can't actually happen, I put in a "`sentinel`" that's never reached, but would return `undefined`.
 That removes the warning, at least.
-It'd be even better to throw an error here, but for simplicity I won't do that.
+It'd be even better to throw an error here, but for simplicity, I won't do that.
 
 
 == Representing and evaluating with unknowns
 
 So far, I have no way to represent an unknown, which would reduce the usefulness of partial evaluation to almost nothing.
 Let's come up with a representative use case/test situation first.
-As expression, I want to use the following expression (in the "`nice`" syntax): `if` `@`0 `then` `@`1 `<` `@`2 `else` -1
+I use the following expression (in the "`nice`" syntax): `if` ``@``0 `then` ``@``1 `<` ``@``2 `else` -1
 
-I want to evaluate this expression against input data with the following form: `[1, v, 2]` with `v` being an unknown.
+I then evaluate this expression against input data with the following form: `[1, v, 2]` with `v` being an unknown.
 Just by looking at this, I can come up with the desired answer:
 
-. The guard expression `@`0 evaluates to `1` which is truthy so the else-branch will be evaluated.
+. The guard expression ``@``0 evaluates to `1` which is truthy so the else-branch will be evaluated.
 . The `@` operators in the then-branch have indices 1, resp. 2, and evaluate to `v`, resp. `2`.
 . The `<` operator reduces to `v < 2`.
 . Therefore, the whole expression reduces to `v < 2`.
@@ -317,6 +317,8 @@ const evaluate = (expr: Expr, input: Value): Expr => {
 }
 ----
 
+The necessary additions are nice and simple.
+
 
 == In closing
 
@@ -329,14 +331,22 @@ Essentially, a program is an _expression_.
 . The input data is directly representable as a program.
 . The evaluation function is _endomorphic_ in its program argument.
 
-These are pretty restrictive conditions, but it's certainly to expand this approach for actual programming languages.
+These are pretty restrictive conditions, but it's certainly doable to expand this approach to actual programming languages.
 It's quite possible that you have to modify the language for this, though.
 
 * You might have to expand the literals of the language to be able to represent all in- and output data, to satisfy the 3rd criterion.
 * You probably have to "`promote`" any errors/exceptions that can be thrown to be actual values, to satisfy the 4th criterion.
 
+Even then, it's quite possible you can only use partial evaluation in a fairly restricted way, e.g. on a per-statement basis for an imperative language.
+Nevertheless, this approach can be quite powerful.
+
+One way to add some power is to add assertions to unknowns.
+As an example: I could extend the `Var` type with a condition that expresses that it holds a `number` smaller than, say, 1.
+If the implementation of the `<` operator is extended to take that extra information into account, partial evaluation would reduce the example expression -- which reduced to `v < 2` on the input data `[1, v, 2]` -- even further, to `true`.
+
+
 [NOTE]
 ====
-You can also consider partial evaluation to be a _program transformation_.
+For the purists: you can also consider partial evaluation to be a _program transformation_.
 ====
 
