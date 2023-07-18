@@ -1,6 +1,5 @@
 = Partial evaluation
 Meinte Boersma
-:stem:
 :sectnums:
 
 Published: July  18th, 2023
@@ -28,42 +27,29 @@ For more details: https://github.com/ehn-dcc-development/eu-dcc-business-rules-a
 
 In this blog post, I'll demonstrate the idea of partial evaluation practically.
 To (be able to) do that, I'll cook up a very simple "`model/test`" programming language.
-That'll allow us to simultaneously ground what I'm doing in some computing theory -- you know: some "`mathy`" stuff.
 
 [IMPORTANT]
 ====
 All the TypeScript code in this blog is available here: https://github.com/dslmeinte/blogs/content/partial-evaluation/src/.
-The code in the first section is contained in the file `iteration-1.ts`, while the code for the second section has been spread out across multiple files in the directory `iteration-2`.
-The code relies on Denofootnote:[https://deno.land/].
+The code in the first section is contained in the file `section-1.ts`, while the code for the second section has been spread out across multiple files in the directory `section-2`.
+The code relies on Denofootnote:[https://deno.land/] for its {Java|Type}Script runtime.
 ====
 
 First, I'll go back to what "`running a program`" means in our case:
 
 image::img/program-execution.png[align="center", height=200px]
 
-In this diagram, **__P__** stands for the **p**rogram to execute, **__I__** for the **i**nput data, and **__O__** for the **o**utput data.
+In this diagram, _P_ stands for the **p**rogram to execute, _I_ for the **i**nput data, and _O_ for the **o**utput data.
 The program is written in some (combination of) programming language(s).
 The &CirclePlus; symbol in the center represents the "`runner`": the thing that runs a given program against given data, to immediately produce an output.
 This may be an interpreter, or a combination of a compilation phase, and an execution phase.
 This only models "`batch programs`", so long-running, interactive programs are not included in this model.
 
-All this means that the "`runner`" is essentially an _evaluation function_:
+All this means that the "`runner`" is essentially an _evaluation function_ `evaluate` which maps the arguments _P_ and _I_ to _O_.
+Let's denote the space of all programs as _E_ (for **E**xpressions -- I'll explain later), and the space of all input data _and_ output data as _V_ (for **V**alues).
+Mathematically speaking, `evaluate` is a function mapping _E &times; V &rarr; V_.
 
-[stem]
-++++
-evaluate : (P, I) mapsto O
-++++
-
-To make this even more mathematical, let's denote the space of all programs as _E_ (for **E**xpressions -- I'll explain later), and the space of all input data _and_ output data as _V_ (for **V**alues).
-So, now I can write:
-
-[stem]
-++++
-evaluate : E times V -> V
-         : (P, I) mapsto O
-++++
-
-It's quite natural and logical that any value has a representation in _E_ as well, so I can assume that V is a subset of E: stem:[V subset E].
+It's quite natural and logical that any value has a representation in _E_ as well, so I can assume that _V_ is a subset of _E_.
 So, the diagram should really be as follows:
 
 image::img/expression-evaluation.png[align="center", height=200px]
@@ -106,7 +92,7 @@ arrays:: any array whose elements are valid literals again
 
 I can take _V_ -- the set of all possible in- and output values -- to equal these literals.
 I leave it as an exercise to the reader to verify that the _evaluate_ function is sufficiently well-defined by the details above.
-In particular, it really is a function stem:[E times V -> V].
+In particular, it really is a function _E &times; V &rarr; V_.
 
 All of these language constructs happen to be _expressions_: they can be run on their own, without causing side effects, and they always produce a value.
 If any program consists of a single expression, it makes sense to denote the space of all programs with _E_ for **e**xpressions.
