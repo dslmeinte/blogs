@@ -4,9 +4,9 @@ Published: August 3rd, 2023
 
 Somewhere May 2021, Ryan Barrettfootnote:[mastodon.social/@radicalbyte, https://www.linkedin.com/in/ryannl/, https://twitter.com/radicalbyte] dropped me a line which went along the lines of: "`You're probably too busy anyway, but if you aren't, we could use you to implement business rules on top of the EU DCC.`"
 At the time, I was on a sabbatical from the Dutch Tax and Customs Agency -- AKA "`De Belastingdienst`" -- with the intent to finish writing a certain https://www.manning.com/books/building-user-friendly-dsls[book on DSLs^].
-So, I wasn't too busy to drop what I was doing, especially not since "`the country needs saving`" -- not my words, but those of Ron Roozendaal, then CTO for the Dutch Ministry of Health, who coordinated the COVID-19 response there.
+So, I wasn't too busy to drop what I was doing, especially not since "`the country needs saving`" -- not my words, but those of Ron Roozendaal, then CIO for the Dutch Ministry of Health, who coordinated the COVID-19 response there.
 
-This was the sparked that jump-started my most interesting job sofar in my career.
+This was the spark that jump-started my most exciting job so far in my career.
 After I was "`drafted`" for this project, my initial briefing went roughly as follows:
 
 [quote, "Marion Braams"]
@@ -16,8 +16,8 @@ You are free to work on that however and however many hours you like, but it wou
 
 OK, no biggie... Also: challenge accepted!
 
-I've already spoken about this experience at a couple of conferences - see e.g. link:LangDev-2022.pdf[this slidedeck for the LangDev 2022 conference].
-But I felt it'd be good to write it down as something of a longer story that might serve as anecdotal documentation, might provide some insight on design decisions made -- insight which might come in handy during future pandemics.
+I've already spoken about this experience at a couple of conferences - see e.g. link:LangDev-2022.pdf[this slide deck for the LangDev 2022 conference].
+But I felt it'd be good to write it down as something of a longer story that might serve as anecdotal documentation, and might provide some insight on design decisions made -- insight which might come in handy during future pandemics.
 I will skip over or simplify some details to avoid that the blog runs even longer, but will provide links to sources for further reading.
 
 [NOTE]
@@ -72,7 +72,7 @@ Mainly for privacy reasons, this can also be a "`truncated`" DOB, such as `"1977
 The value of this field is an array containing exactly one _event record_.
 <3> The ID of the vaccine administered.
 <4> I'll say more about these fields in the section <<continuous-counting>> below.
-<5> The `ci` field contains an https://lexparency.org/eu/32021D1073/ANX_III/[Unique Certificate Identifier] that uniquely identifies the precise vaccination.
+<5> The `ci` field contains a https://lexparency.org/eu/32021D1073/ANX_III/[Unique Certificate Identifier] that uniquely identifies the precise vaccination.
 
 See https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf[here] for more details on the format.
 
@@ -80,20 +80,20 @@ See https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certifica
 ====
 The EU DCC was designed, developed, and rolled out across the EU as well as participating countries in the rest of the world _in mere months_.
 That was quite an achievement: we often see such international projects easily take multiple years, and even then not necessarily meeting with success.
-The obvious urgency played a big role, but I think a bigger part of the success can be attributed to the involvement of, and cooperation between, a relatively small number of high-quality software engineers who were then given a great deal of autonomy, devoid of the usual bureaucratics.
+The obvious urgency played a big role, but I think a bigger part of the success can be attributed to the involvement of, and cooperation between, a relatively small number of high-quality software engineers who were then given a great deal of autonomy, devoid of the usual bureaucratic shenanigans.
 
 At one point during 2022, upwards of 80 countries were issuing and accepting DCCs.
 Roughly one DCC has been issued for every human being on Earth.
-Those are huge numbers for something that was developed from scratch early 2021!
+Those are huge numbers for something that was developed from scratch in early 2021!
 ====
 
 However, countries being able to issue digitally-verifiable proof of vaccination, test, and recovery is only one side of the equation.
-Under EU's principle of sovereignty, each country are free to establish their own fit-for-entry regulations that determine when a person holding an EU DCC can enter that country.
+Under the EU's principle of sovereignty, each country is free to establish its own fit-for-entry regulations that determine when a person holding an EU DCC can enter that country.
 (By extension, the same goes for every country participating in the EU DCC.)
 Every time a scanner app scans a DCC, it should check the data in the DCC presented against the entry regulations of the country traveled to, to determine whether the DCC's holder is deemed fit-for-entry.
-In principle, each country could simply implement their entry regulation in their own scanner apps, using regular code.
+In principle, each country could simply implement its entry regulation in its own scanner apps, using regular code.
 (And many countries did just that, for varying reasons.)
-But there's a couple of problems with that reasoning:
+But there are a couple of problems with that reasoning:
 
 . Every time the regulations changed the scanner apps needed to be changed as well.
 Regulations often changed because of policy, but also because new vaccines were approved.
@@ -118,7 +118,7 @@ It's also called the _logic_ bit of the business rule.
 . A __flag__ "`acceptance`" or "`invalidation`".
 The logical expressions of acceptance-rules should evaluate to `true`, while the expressions of invalidation-rules should evaluate to `false`.
 Invalidation-rules are meant as a mechanism to invalidate whole sets of DCCs based purely on the data in them.
-The primary example is hackers having produced fake DCCs from fake German pharmacies, but for the rest it's been rarely used.
+The primary -- and so far only -- example is hackers having produced fake DCCs from fake German pharmacies.
 
 All business rules are encoded in JSON, and then distributed through something called the EU DCC Gateway: a central data exchange that also holds public PKI keys for verifying DCCs with.
 Countries' _national backends_ download information from this central Gateway to distribute further, and also update their own information for distribution across other countries.
@@ -133,13 +133,13 @@ Of course, the scope is quite limited: only simple entry regulations that only u
 More intricate entry regulations that need additional data can't be expressed this way.
 Examples are: whether the DCC's holder is traveling from a country where a Variant of Concern is circulating, or what the DCC's holder's citizenship status is, 
 The small scope was necessary to get something usable working within the short timeframe available.
-On the other hand, several participating countries have never published business rules precisely because they couldn't fit their entire entry regulations in the framework.
-They felt that publishing only a part of their entry regulations amounting to misleading travelers: an app evaluating the "`partial`" business rules could've deemed a traveler fit-for-entry, while the border agent would turn them back.
+On the other hand, several participating countries have never published business rules precisely because they couldn't fit their entire entry regulations into the framework.
+They felt that publishing only a part of their entry regulations amounted to misleading travelers: an app evaluating the "`partial`" business rules could've deemed a traveler fit-for-entry, while the border agent would turn them back.
 
 
 == Specifying logic with CertLogic
 
-Not that I've set up the context, I can tell you what my role in all of this was.
+Now that I've set up the context, I can tell you what my role in all of this was.
 Overall, most of my effort went into designing, specifying, and rolling out the business rules framework, and helping countries use it to implement their entry regulations with.
 
 The suggestion I started off with was to use https://jsonlogic.com/[JsonLogic]: an existing format/framework that's used to specify business logic.
@@ -161,7 +161,7 @@ JsonLogic has implementations on various popular platforms, including mobile-fri
 The merit of this idea was that:
 
 * Business rules could be downloaded as JSON.
-Doing that doesn't violate the "`no bytecode`"-policy for apps which exists on some mobile platforms -- most notably, Apple's.
+Doing that doesn't violate the "`no bytecode`"-policy for apps that exists on some mobile platforms -- most notably, Apple's.
 * A suitable JsonLogic implementation should be easy to integrate into all kinds of apps, both mobile and Web.
 
 Playing around with JsonLogic, I soon found out that its various implementations had varying behaviour on the same input.
@@ -176,7 +176,7 @@ I also provided several tools to "`play around`" with it.
 (I also checked that CertLogic agreed on the part of JsonLogic's test suite where they overlapped "`syntactically`".)
 CertLogic has all the advantages we sought to have from JsonLogic, without the disadvantages.
 
-I also added a couple of operations to CertLogic that weren't in JsonLogic, specifically for working with dates and datetimes.
+I also added a couple of operations to CertLogic that weren't in JsonLogic, specifically for working with dates and datetimes/timestamps.
 The `plusTime` operation takes a string with a valid date or datetime (a subset of the ISO 8601 standard), an integer amount, and a time unit (days or years are most often used).
 Its evaluation yields a JavaScript `Date` value that represents the given date(-time) with the indicated amount of time units added to it -- or subtracted from it if the amount was negative.
 
@@ -186,7 +186,7 @@ To be able to compare date(-times) with each other, I added `after`, `before`, `
 Feeding 3 operands to any comparison operation chains the corresponding comparison operator.
 E.g., `{ "<": [ 1, 2, 3] }` is the same as 1 < 2 < 3 -- in other words: `1 < 2 && 2 < 3`.
 
-One typical situation where this is used, is to check that the _waiting (or delay) time_ of a vaccine has elapsed.
+One typical situation where this is used is to check that the _waiting (or delay) time_ of a vaccine has elapsed.
 An example would be to check whether the timestamp of vaccination plus 12 days is before the current moment -- the waiting time for that vaccine is then 12 days.
 This can be expressed as:
 
@@ -220,13 +220,13 @@ So, passing the path string `payload.v.0.dt` to the `var` operation retrieves th
 <2> The timestamp of validation is passed as a field `validationClock` in an object `external` that holds some external parameters.
 
 I could've had the `plusTime` operation operate on a parsed date(-time), with a separate `parseTime` operation to actually do the parsing.
-But these operation would've more often than not been used in direct combination with each other.
+But these operations would've more often than not been used in direct combination with each other.
 In the cases where you only need the parsing, you can just add 0 of any time unit.
 
 [NOTE]
 ====
 I like to call CertLogic a _language_, even if it's "`just`" a JSON format.
-My "`dayjob`" of implementing Domain-Specific Languages (**DSL**s) is probably part of the reason why.
+My "`day job`" of implementing Domain-Specific Languages (**DSL**s) is probably part of the reason why.
 But the other part is that CertLogic has most of the hallmarks of a true DSL -- or broader: a software language.
 It has **structure**, a type system (although mostly implied) fueling **constraints**, **meaning** (semantics), and even a **notation** (a specialisation of JSON).
 (The four highlighted notions are the key aspects of DSLs/software languages. You can read more about them in my upcoming book _Building User-Friendly DSLs_.)
@@ -236,7 +236,7 @@ So, from here on, I'll refer to CertLogic as a language.
 
 === Do: keeping it small
 
-Keeping the CertLogic language as small, simple, and focused as possible was absolutely key to achieve correctness and security within the very short timeframe available.
+Keeping the CertLogic language as small, simple, and focused as possible was absolutely key to achieving correctness and security within the very short timeframe available.
 It being small leads to an immediate reduction of effort: there are fewer concepts and properties thereof to code up.
 It being simple means there's less chance of any kind of "`interference`" between elements of the languages.
 It being focused means that it's not as tempting to put in the whole kitchen sink.
@@ -245,14 +245,14 @@ It being focused means that it's not as tempting to put in the whole kitchen sin
 ====
 What are useful metrics for "`size`" or "`complexity`" -- with the former possibly acting as a proxy for the latter -- in the context of software languages?
 An obvious -- but not necessarily useful! -- metric is the number of recognisable concepts in the structure of a language.
-It gets already murkier with the number of properties/features of concepts: should we look at their total number, their average number, the maximum number of properties among all concepts?
-I'm not sure there's much use in trying to going scientific here: you'll probably recognise something as "`small`" when it obviously is -- and when it isn't recognisably small, it probably isn't.
+It gets already murkier with the number of properties/features of concepts: should we look at their total number, their average number, or the maximum number of properties among all concepts?
+I'm not sure there's much use in trying to be scientific here: you'll probably recognise something as "`small`" when it obviously is -- and when it isn't recognisably small, it probably isn't.
 ====
 
 Of course, minimising a language comes at a certain cost: assuming that a criterion _can_ be expressed in CertLogic doesn't mean it can be expressed "`comfortably`".
 As before, it's difficult to come up with some kind of metric for the notion of "`comfort`".
 A sensible proxy could be the size of the smallest(-ish) logical expression that expresses a certain criterion.
-We've seen quite a bit of variation in ways in which certain criteria have been implemented.
+We've seen some variation in the ways in which certain criteria have been implemented.
 
 One of the features of CertLogic is that there are logical `and`, logical `not`, and the usual `if` operators, but not an `or` operator.
 I've been asked multiple times why I didn't put in an `or` operator.
@@ -265,15 +265,15 @@ It's easy to https://github.com/ehn-dcc-development/eu-dcc-business-rules/blob/m
 
 After the initial version of CertLogic was released, the language has had only 3 modifications.
 The first one relates to the https://lexparency.org/eu/32021D1073/ANX_III/[Universal Certificate Identifier] that's found in the `ci` field of a `v` event record.
-(Initially, these identifier were called Universal Vaccination Certificate Identifier, with the abbrevation UVCI still lingering.)
-An UCI can be essentially opaque -- as is the case in the example above -- , but it can also be structured to e.g. identify the vaccination facility through one of its fragments.
+(Initially, these identifier were called Universal Vaccination Certificate Identifier, with the abbreviation UVCI still lingering.)
+A UCI can be essentially opaque -- as is the case in the example above -- , but it can also be structured to e.g. identify the vaccination facility through one of its fragments.
 
 
 === Do: domain-specific extensions
 
 At some point in 2021, it emerged that in one EU Member State EU DCCs were being issued from non-existent -- i.e. fake -- vaccination facilities, apparently as proof that security wasn't as tight as it should be.
 These fake issuers were luckily easily identifiable from the UCI, which made it possible to use a business rule with an "`invalidation`" flag to invalidate the falsely-issued DCCs.
-Someone first suggested to "`just`" add a regex operation to CertLogic to detect such UCIs.
+Someone first suggested "`just`" adding a regex operation to CertLogic to detect such UCIs.
 This would've worked but I was against that for several reasons:
 
 * CertLogic has implementations on several platforms (and GPLs), and any operation should work exactly the same on all of these.
@@ -312,18 +312,18 @@ So, in retrospect, we should have just extended `plusTime` with the "`rounding`"
 
 I've written about partial evaluation before, in https://github.com/dslmeinte/blogs/blob/main/content/partial-evaluation/partial-evaluation.adoc[this blog post].
 I implemented partial evaluation as https://github.com/ehn-dcc-development/eu-dcc-business-rules/tree/main/certlogic/certlogic-utils-js/src/partial-evaluator[a utility next to/part of CertLogic] to be able to analyse countries' business rules.
-In particalur, I wanted to be able to derive for each country that had published business rules which vaccines they accepted, and what delay/wait times applied for those.
+In particular, I wanted to be able to derive for each country that had published business rules which vaccines they accepted, and what delay/wait times applied for those.
 
 Initially, I ran the analysis just by running lots of input data at a set of business rules.
-In particular, for a particular combination of vaccine, _<``dn``>_/_<``sd``>, I let the vaccination date run across a couple of years with increments of one day.
-This was obviously slow, because a lot of combinations had to be checked.
-It was also somewhat inaccurate, because there's no guarantee that the pattern of a vaccine with some waiting/delay time and maximum validity -- say, 1 year -- actually arises.
+In particular, for a particular combination of vaccines, _<``dn``>_/_<``sd``>, I let the vaccination date run across a couple of years with increments of one day.
+This was obviously slow because a lot of combinations had to be checked.
+It was also somewhat inaccurate because there's no guarantee that the pattern of a vaccine with some waiting/delay time and maximum validity -- say, 1 year -- actually arises.
 To fix that, I eventually implemented partial evaluation.
-(Before that, I also implemented a https://github.com/ehn-dcc-development/eu-dcc-business-rules/tree/main/certlogic/certlogic-utils-js/src/compiler[compiler] which speeded things up nicely, but still had the second problem described above.)
+(Before that, I also implemented a https://github.com/ehn-dcc-development/eu-dcc-business-rules/tree/main/certlogic/certlogic-utils-js/src/compiler[compiler] which sped things up nicely, but still had the second problem described above.)
 
 The implementation of the partial evaluator is somewhat "`messy`".
 This is partly because the partial evaluation doesn't do any tracing.
-That means that https://github.com/ehn-dcc-development/eu-dcc-business-rules/blob/main/certlogic/certlogic-utils-js/src/partial-evaluator/partial-evaluator.ts#L109[in some cases the partial evaluator "`can't do too much work`"] or we wouldn't be able recognise after that a logical condition is intrinsincally dependent on e.g. the vaccination date.
+That means that https://github.com/ehn-dcc-development/eu-dcc-business-rules/blob/main/certlogic/certlogic-utils-js/src/partial-evaluator/partial-evaluator.ts#L109[in some cases the partial evaluator "`can't do too much work`"] or we wouldn't be able recognise after that a logical condition is intrinsically dependent on e.g. the vaccination date.
 A perfectly good way to do tracing "`transparently`" exists, but I just didn't have time for it when I implemented the first iteration of the analysis, and later never got around to properly rewriting it.
 
 The other reason for the "`messiness`" is that I first had to extend CertLogic to make it _endomorphic_.
@@ -337,14 +337,14 @@ The cells for the combination with `dn`, `sd` at least 3 are typically identical
 
 It's entirely possible to extend the `unknown` concept so that separate `unknown` values are actually _variables_, possibly with relations between them.
 With that, I could have specified `dn/sd` as _a_/_b_ with _a_ &geq; _b_ &geq; 3.
-Then I could have made the partial evaluator smarter, so that it would evaluate a comparison `a &geq; b` to `true`.
+Then I could have made the partial evaluator smarter so that it would evaluate a comparison `a &geq; b` to `true`.
 That would have meant that the analysis table could have one column corresponding to `dn/sd = _a_/_b_` with _a_ &geq; _b_.
 That would've been much more readable, and readily understandable.
-To make the analysis work, I had to make https://github.com/ehn-dcc-development/eu-dcc-business-rules-analysis/blob/main/src/analyser/replacements.json["`replacements`"]: occurrences of certain sub expressions in the business rules set of a specific country would be replaced by simpler expression.
+To make the analysis work, I had to make https://github.com/ehn-dcc-development/eu-dcc-business-rules-analysis/blob/main/src/analyser/replacements.json["`replacements`"]: occurrences of certain sub-expressions in the business rules set of a specific country would be replaced by a simpler expression.
 This achieved things like assuming that the DCC's holder was at least 18 years old, even without having implemented the comparison w.r.t. the comparison operations described in the previous paragraph.
 
 In general, I found partial evaluation a powerful tool to reason about, or even check, the meaning of a bit of code.
-It's usually not even to difficult to implement.
+It's usually not even too difficult to implement.
 As with CertLogic, you might have to do some retrofitting/extending-after-the-fact, but hey: that even might make your language better.
 
 
@@ -366,7 +366,7 @@ The reasons:
 +
 .. Keep the EU DCC's payload small so it fits in a QR code with a density/resolution that virtually all devices can accurately scan.
 .. Prevent problems with having to issue a new DCC including data from a previous one.
-.. Each DCC has a expiry date -- typically a full year for a vaccination- or recovery-DCC, but significantly less for a test-DCC.
+.. Each DCC has an expiry date -- typically a full year from issuance for a vaccination- or recovery-DCC, but significantly less for a test-DCC.
 With multiple events, how to combine those expiry dates?
 .. There was a fear that having multiple events in one DCC would make implementing business rules more complex.
 This fear was certainly not unfounded: it would have things more complicated.
@@ -382,12 +382,12 @@ This makes it e.g. impossible to check vaccination dates stated in `v` event rec
 ====
 +
 . At the same time, scanner apps are allowed to only scan one DCC at a time.
-Directly after scanning is verifies the DCC's authenticity, and decides whether the person providing the DCC is allowed to be where they are.
+Directly after scanning it verifies the DCC's authenticity, and decides whether the person providing the DCC is allowed to be where they are.
 The scanner app is not allowed to store that DCC in any way because it's considered to be medical, so personal data according to the GDPR.
 This rules out "`scanning sessions`" in which multiple DCCs of a single person are scanned one-by-one using a scanner app, which then combines the data in the scanned  
 
 The `dn` and `sd` fields in a vaccination-DCC (see the JSON listing near the start of this blog) intend to solve all of these problems.
-The `sd` field -- most likely short for **s**eries **d**oses, although I can neither find, nor remember that -- contains an integer that indicates how many vaccinations are in the complete series of vaccinations leading to sufficient immunisation according to the vaccination protocol used.
+The `sd` field -- most likely short for **s**eries **d**oses, although I can neither find nor remember that -- contains an integer that indicates how many vaccinations are in the complete series of vaccinations leading to sufficient immunisation according to the vaccination protocol used.
 This field typically has the value `2` for any (non-booster) vaccine that's not the famous Janssen vaccine of which you only need one shot.
 The `dn` field -- short for **d**ose **n**umber -- contains an integer that says which number the current vaccination has in the series.
 
@@ -397,8 +397,8 @@ I think it was my colleague Marion Braams who coined the term "`continuous count
 I'll keep using the notation _<``dn``>_/_<``sd``>_ for brevity.
 
 So far, so good, and in theory this should fix the problems above -- in theory...
-In practice, there's many reasons why this doesn't work out.
-In fact, even in theory this approach already has a fundamental problem: it aggregates an entire history of vaccinations (and recoveries -- see below) into a pair of integers, and therefore __hides__ information.
+In practice, there are many reasons why this doesn't work out.
+In fact, even in theory this approach already has a fundamental problem: it aggregates an entire history of vaccinations (and recoveries -- see below) into a pair of integers and therefore __hides__ information.
 This information hiding comes back to nibble you on the buttocks as soon as you would have needed to make a decision based on that information.
 
 Problems with this approach are:
@@ -410,7 +410,7 @@ Sometimes that resulted in a DCC with 2/2, sometimes with 1/1, or even 2/1 -- de
 (Not all countries register their vaccinations centrally.)
 This turns issuing a new vaccination DCC into a bit of custom thinking work on the part of the issuer in the best case, and into guesswork in the worst -- unless you happen to carry all your previous DCCs including recoveries and even tests.
 
-* A more subtle problem occurs for people that need more vaccinations than other people, such as with immunocompromised people.
+* A more subtle problem occurs for people that need more vaccinations than other people, such as immunocompromised people.
 This would just be a matter of issuing DCCs with `sd` equal to 3, or 4, or however many shots the doctors feel are required.
 The problem with that is that such an `sd` is a very likely indicator of the DCC's holder having some kind of medical problem.
 The GDPR says it's actually medical, and thus _personal_, information.
@@ -425,7 +425,7 @@ In the end, we arrived at something somewhat workable, if slightly illogical:
 The continuous counting quasi-catastrophe made clear to me that even in this context with a lot of very good people, it's still ridiculously easy to let something like this slip in.
 "`Always have your guard up`" is certainly a lesson learned here, especially in situations where "`design by committee`" happens.
 
-It'd be good if we had been able to replace it with a proof of sufficient immunisation according to a defined protocol.
+It'd been good if we had been able to replace it with proof of sufficient immunisation according to a defined protocol.
 Alas, by the time we had time and opportunity to propose that change, restrictions were already being lifted across Europe.
 That meant interest was waning, and no-one could really be bothered to implement this substantial change.
 By the way: the proposal still exists in the form of https://github.com/ehn-dcc-development/eu-dcc-schema/compare/main...feature/approved-for-travel[this Git commit].
@@ -442,16 +442,16 @@ A minor thing is that I would have liked to test using the EU DCC for another di
 
 With regard to business rules overall:
 
-. __A proper IDE for authoring business rules with, including test facilities.__
+. __A proper IDE for authoring business rules, including test facilities.__
 +
-The JSON format for describing business rules that the framework prescribes, isn't terribly complex, but it's complex enough that business rules implementors could do with some help in the form of an IDE.
-I did provide a https://github.com/eu-digital-green-certificates/dgc-business-rules-testdata[test/staging environment] (of-sorts) in the form of a GitHub repository.
+The JSON format for describing business rules that the framework prescribes isn't terribly complex, but it's complex enough that business rules implementors could do with some help in the form of an IDE.
+I did provide a https://github.com/eu-digital-green-certificates/dgc-business-rules-testdata[test/staging environment] (of sorts) in the form of a GitHub repository.
 Business rule implementors could make a PR with new (versions of their) rules together with tests that were specific to a single rule, and a GitHub Action would run these tests.
 They could also clone this repo, and work locally, by kicking off the testing with a CLI command.
 This seems to have worked reasonably, but it's of course a long shot from a proper IDE.
 It would also have been good to add tests that exercised a complete set of (acceptance) business rules.
 +
-Apart from time, one of the main problems with such an IDE was that there was almost zero commonality between development environments of business rules implementors.
+Apart from time, one of the main problems with such an IDE was that there was almost zero commonality between development environments of business rules' implementors.
 Especially publishing business rules by uploading them to the EU DCC Gateway from a national backend was very country-specific.
 That makes it almost useless to even try.
 
@@ -459,7 +459,7 @@ That makes it almost useless to even try.
 +
 The scope of the business rules framework was -- by necessity and design -- quite limited.
 I would have liked to expand the framework to a point where more input data could be received, and a more fine-grained, layered conclusion than `true` or `false` (or "`Error`") could be reached.
-I made a https://non-dcc-rules-prototype.vercel.app/[proposal implementation] of such an extended standard, but the interest and need was already waning at that point.
+I made a https://non-dcc-rules-prototype.vercel.app/[proposal implementation] of such an extended standard, but the interest and need were already waning at that point.
 
 . __Capturing entry regulations as a configuration?__
 +
@@ -468,17 +468,17 @@ In fact, most countries copied the set of template/example rules I had implement
 The question naturally arises whether it wouldn't have been easier to use a configuration instead of a full logical expression language (CertLogic) and a pretty generic business rules framework.
 Beyond the analysis based on partial evaluation, I didn't pursue this angle for several reasons.
 Mostly because it would've meant introducing a new standard to replace an existing, and working one, which also would've meant introducing a legacy problem.
-Partly it was because we were going for a more generic framework -- see previous item.
+Partly it was because we were going for a more generic framework -- see the previous item.
 
 With regard to CertLogic specifically:
 
 . __A proper IDE for authoring CertLogic, using a "`nice`", human-writable syntax/notation.__
-Expressions of logical conditions in a JSON format like CertLogic quickly becomes large, which means that authoring and amending quickly becomes tedious, error-prone, and complex.
+Expressions of logical conditions in a JSON format like CertLogic quickly become large, which means that authoring and amending quickly becomes tedious, error-prone, and complex.
 The usual notation for such expressions is really just quite succinct, so a hard target to beat.
 Coming up with an alternative notation for CertLogic loosely based on existing expression languages is quite doable.
 In fact, I did implement on in the form of a https://github.com/ehn-dcc-development/eu-dcc-business-rules/tree/main/mps[vestigial implementation in MPS].
 Unfortunately, that project was pretty much stillborn because MPS requires installing a Java tool, which is not necessarily allowed on "`random`" government computing hardware.
-A Web IDE -- especially one that could be run completely locally/off-line -- would've had a much better chance.
+A Web IDE -- especially one that could be run completely locally/offline -- would've had a much better chance.
 I only started having time for such things again once interest in using business rules and therefore, their tools, was already waning -- unfortunately.
 
 . __Splitting the validation from the evaluation.__
@@ -489,7 +489,7 @@ One obvious way to do this would be to make separate functions `evaluate` and `v
 +
 One side effect of that would've been that we could have avoided having a discussion about whether to use the on-the-fly validation to introduce a "`third outcome`" of the evaluation of a business rule('s logic).
 That third outcome -- next to `true` or `false` -- could be used by a scanner app to give a specific notification to the DCC's holder, such as: "`You should be getting a booster ASAP.`"
-Another side effect would have been that the implementation of a type system (see the next sub item) and/or a compiler (for ) is a bit easier.
+Another side effect would have been that the implementation of a type system (see the next sub-item) and/or a compiler (for ) is a bit easier.
 
 .. __Implementation of a proper type system, including awareness of JSON Schema of input data.__
 +
