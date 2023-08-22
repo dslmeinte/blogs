@@ -1,6 +1,6 @@
 = "`Post-mortem`" of business rules for the EU DCC
 
-Published: August 3rd, 2023
+Published: August 22nd, 2023
 
 Somewhere May 2021, Ryan Barrettfootnote:[mastodon.social/@radicalbyte, https://www.linkedin.com/in/ryannl/, https://twitter.com/radicalbyte] dropped me a line which went along the lines of: "`You're probably too busy anyway, but if you aren't, we could use you to implement business rules on top of the EU DCC.`"
 At the time, I was on a sabbatical from the Dutch Tax and Customs Agency -- AKA "`De Belastingdienst`" -- with the intent to finish writing a certain https://www.manning.com/books/building-user-friendly-dsls[book on DSLs^].
@@ -425,10 +425,13 @@ In the end, we arrived at something somewhat workable, if slightly illogical:
 The continuous counting quasi-catastrophe made clear to me that even in this context with a lot of very good people, it's still ridiculously easy to let something like this slip in.
 "`Always have your guard up`" is certainly a lesson learned here, especially in situations where "`design by committee`" happens.
 
-It'd been good if we had been able to replace it with proof of sufficient immunisation according to a defined protocol.
-Alas, by the time we had time and opportunity to propose that change, restrictions were already being lifted across Europe.
+It'd been good if we had been able to replace it with something better.
+Alas, by the time we had time and opportunity to make a suitable proposal for change, restrictions were already being lifted across Europe.
 That meant interest was waning, and no-one could really be bothered to implement this substantial change.
-By the way: the proposal still exists in the form of https://github.com/ehn-dcc-development/eu-dcc-schema/compare/main...feature/approved-for-travel[this Git commit].
+The proposal still exists in the form of https://github.com/ehn-dcc-development/eu-dcc-schema/commit/7f59878e197a1c5d3caa92c9deaa918d5d3085d7[this Git commit].
+It proposes to add a fourth type of event record: a proof/statement of sufficient immunisation according to a defined protocol.
+Such an event record simply says "`Country _<C>_ deems this DCC's holder to be sufficiently immunised as per protocol _<P>_ on _<D>_ onwards. More information about this decision can be retrieved via the stated UCI by the stated certificate issuer.`"
+This would have vastly reduced the complexity space of the business rules and avoided all the continuous counting issues altogether.
 
 
 == What we didn't get around to
@@ -438,7 +441,8 @@ More importantly, others might disagree over your notion of usefulness, and vice
 So in the end, there are several things which I would've liked to do (or had liked to do better), but which never landed on that magical intersection of "`have time`", "`is useful`", and traction.
 
 With regard to the EU DCC in general, the only major thing would've been to __replace continuous counting__ -- see the rant above.
-A minor thing is that I would have liked to test using the EU DCC for another disease than COVID-19, and see what changes to the standards involved this necessitated.
+A minor thing is that I would have liked to test more thoroughly using the EU DCC for other diseases than COVID-19, and see what changes to the standards involved this necessitated.
+I did make a case study for monkeypox, though -- luckily, that didn't turn into an endemic/pandemic.
 
 With regard to business rules overall:
 
