@@ -2,6 +2,7 @@
 
 All my blogs in one spot:
 
+* [LionWeb at the MBSE 2025 conference](./content/recap-mbse-2025.adoc)
 * [“Post-mortem” of business rules for the EU DCC](content/eu-dcc-business-rules-post-mortem/blog.adoc)
 * [Partial evaluation](content/partial-evaluation/partial-evaluation.adoc)
 * [Test your dependencies](content/test-your-dependencies.adoc)

@@ -1,0 +1,154 @@
+= LionWeb at MBSE 2025
+
+Published: November 20th, 2025
+
+**Note**: I’m writing this on *personal title*, so merely as a member of the https://lionweb.io[LionWeb] initiative, not on behalf of it.
+The observations, views, and opinions expressed in this piece are mine — which is not to say the other LionWeb people might not share some of them.
+
+Let’s start with a controversial quote:
+
+****
+SysML v2 will fix all the problems in MBSE, including tool interoperability!
+****
+
+But more on that below.
+
+Together with a couple of members of the LionWeb initiative, I traveled to beautiful Vilnius, for the https://b2match.com/e/mbse-2025[MBSE 2025 conference].
+The https://inovacijuagentura.lt/?lang=en[Lithuanian Innovation Agency] was extremely nice to organize this event, together with the Space Hub LT and the European Space Agency [ESA](https://www.esa.int).
+Mind that “MBSE” stands for Model-Based *Systems* Engineering, so the end goal of people doing MBSE is not a software system, but rather a system mainly consisting of physical hardware.
+
+We had the following missions:
+
+* See how folks in the space domain do MBSE (differently than in model-driven software engineering).
+* Get to know people in the space domain.
+* Spread the word about LionWeb, and specifically its promise for model interoperability.
+
+The last mission was the most important, and we did so by giving a https://www.b2match.com/e/mbse-2025/sessions/c2Vzc2lvbjoyMDA5MzM=[talk], as well as by talking about LionWeb with as many people as we could, without – or prior to! – them running away.
+The talk went great, thanks to the efforts of all involved, especially those by F1RE’s Ulyana Tikhonova: she fielded the brunt of the work of making slides and giving the presentation of those and no less than two demos.
+During the talk we had a couple of good questions/discussions that gave us insight into how the “space people” think about, do, and (might) *want* to use modeling in their work.
+The last section of the talk consisted of us asking 19 questions that were designed to elicit more feedback like that.
+The audience seemed to like what we were doing, and afterwards we got nice words, and even the comment “This is mindblowing!”
+
+****
+The slides of the talk will be published soon https://mb4se.esa.int[here].
+You already can find the repositories for the demos on GitHub: https://github.com/LionWeb-io/space-demo[space demo], https://github.com/LionWeb-io/sysmlv2-demo[SysML v2 demo].
+****
+
+Now, I’ll share my more general observations of the conference — so, not necessarily specifically pertaining to LionWeb.
+Let’s start with the teaser from above.
+
+
+== SysML v2
+
+Of course, no one actually uttered the quote at the beginning, but quite a bit of “SysML v2 fetishism” was definitely going on.
+A proposal for SysML v2 apparently – I wasn’t attending – was the talk of the town during MBSE 2024.
+This June, the standard was officially released, which obviously garnered a lot of hype during MBSE 2025.
+We know a couple of things about it, in the meanwhile, also because one of the two demos in our talk was about SysML v2.
+A couple of things that stand out for me:
+
+* It’s a *large* language, with lots of concepts, and a deep hierarchy.
+* The language itself hardly has any executable semantics, and is mostly about modeling the *structure* of the system, rather than its behavior.
+* It comes with a large, domain-specific standard library of “functional components” which seem to provide most of the actual semantics.
+	As an example: there’s a clock component that provides a clock signal, and which can be hooked up to other components.
+	The way that this standard library is defined allows models that use these standard components, to be checked beyond mere structure.
+
+Mind that I formed this opinion on the basis of an extremely cursory inspection of the standard, and on what I heard from my colleagues.
+
+Part of the hype was the claim that SysML v2 would solve a lot of problems within MBSE, *including tool interoperability*.
+This is a bizarre claim in the ears of language engineers, because we’re seeing on a daily basis that:
+
+1. Just one language is almost never enough.
+2. Tool interoperability comes from a different dimension than the language itself.
+
+We’ve seen time and time again that “just use a standardized language” provides no guarantee whatsoever.
+The best you could do with respect to point 2 is making all SysML v2 tools *compatible*, but that’s still weaker than interoperability — see point 1.
+
+Remember that UML made the same claim?
+Also remember that the various UML tools *still* weren’t entirely compatible, even if they happened to be using the (exact same) EMF implementation of UML?
+Exactly.
+We did our best to dispel people of this notion, but I guess we also still have to do some more “gospel preaching” next installment of this event.
+
+It’s certainly an interesting development in MBSE, and we’ll have to see how well SysML v2 gets adopted and how it evolves further.
+
+
+== Interoperability
+
+The various modeling tools we see being used generally seem to shy away from interoperability: they seem to favor the “we’re our own universe” paradigm.
+Even tools that happen to be based on the same modeling language(s) – say, SysML v2 – aren’t necessarily frictionlessly interoperable.
+People seem to tend to “solve” the interoperability problem (at least partially) simply by using as few tools as possible.
+Ideally, you use just one tool of every kind, and maybe cobble them together using some Python scripts or something similar.
+
+This is not to say that people in the field don’t *want* to use more tools, and integrate them in a meaningful way!
+But doing so is simply to difficult/expensive – or even impossible – to achieve using existing tools.
+Seasoned language engineers that we are, we were already aware of this phenomenon before, which is *exactly* why we’re part of the LionWeb initiative.
+We deemed this conference a good place to be at to promote LionWeb, even if it’s not a conference in the language engineering or even computer science field.
+It was therefore encouraging to see that many people seemed to grasp fairly quickly why using LionWeb as a basis for true interoperability would be a Good Thing™.
+
+
+== To model, or not to model*
+
+*) W. Shapespeare, paraphrased
+
+The people attending this MBSE conference are, for the most part, not software engineers/developers.
+Not even all of them are from the space domain specifically: some are (systems) engineers from other domains, some are (employees of) tool vendors/makers, and some are just interested in MBSE or an adjacent field.
+(And then there’s us LionWeb folks, although you could consider us to be somewhere in between tool makers and “adjacents”.)
+
+Most attendees seem to have a solid background in an engineering discipline: think electrics and electronics, structural, optical, thermal, and propulsion engineering — meaning that some of them are literally rocket scientists!
+The use of models and modeling seems to be quite well-spread within systems engineering, and I’m guessing that hardly anything in the space domain could get done without sophisticated software tools.
+
+Some of these tools are pretty generic to science and engineering: Matlab-with-Simulink (quite ubiquitous), and CAD/CAM systems.
+Others are tied to a specific engineering discipline.
+Of course, it was once again confirmed that Excel – seemingly inevitable! – is the world’s most-used modeling environment.
+
+The people attending this conference are quite aware that separate disciplines – and tools for them – should be working together to create a complete system.
+The components of such a system can be viewed as separate systems themselves, which is why people also talk about a “system of systems”.
+This explains the “system**s** engineering” part of the event’s acronym.
+They’re also aware that it’d be a Good Thing™ when the tools used in the various disciplines and for the various subsystems are sufficiently integrated to achieve an overarching view of the system of systems.
+
+What also struck me, is the somewhat non-committal nature of MBSE: *anything* better than “we exchange documents that we then review manually” seems to already be good enough, and a considerable step up from the status quo.
+Review processes play a huge role in the space domain, but it is perplexing that there’s not more drive towards making these processes more effective and efficient by putting the information to review in models that can be validated automatically.
+
+The term “digital twin” was quite popular as well, which is somewhat odd because I thought a digital twin can effectively be nothing less than a highly-accurate, comprehensive, and executable model of the system you’re trying to build.
+But that’d require truly integrating the various modeling tools in play, and using modeling languages that are complete enough to truly be able to simulate the model.
+So, it seems that digital twins are not really achievable with the current level of MBSE.
+
+
+== The importance of short feedback cycles
+
+Software engineers/developers take a lot of development functionality and convenience for granted these days.
+In particular, we prefer our model validation (and code checking and compilation) to be incremental, thank you very much.
+It’s not good if “red squigglies” take more than, say, 1s to appear after you’ve made a mistake.
+After you’ve fixed said mistake, those squigglies should disappear just as quickly again.
+
+Much to my surprise, this view is not common among MBSE-people.
+It’s apparently perfectly alright to model away, and rely on a nightly CI-build to run a model validator, and email you with a list of everything you did wrong the next day.
+The scene that plays in my head when hearing is, is that of an large, ocean-going ship that gets (only) one GPS position fix every midnight.
+A feedback cycle spanning more than one working day probably represents an extreme, but in general, not much value seemed to be placed on very short feedback cycles while modeling.
+
+
+== AI
+
+Just as inevitable as Excel being considered as a modeling environment, was the presence of (Gen)AI.
+Several talks mentioned the possibility of GenAI producing models in some tool.
+I’m sure this works – at least to some extent – and that it looks impressive, although I haven’t seen it in action myself.
+
+I can’t help to re-iterate every chance I get that GenAI fundamentally has no actual knowledge, and certainly not about your domain.
+If a GenAI produces a model, you simply *need* an alternative means of verifying that the produced model is correct.
+For the space domain, this is relatively straightforward: an incorrect model shouldn’t pass the review process.
+Nevertheless, if a GenAI-produced model doesn’t pass muster, the question is what the value of using GenAI was in the first place.
+Let’s hope that “AI slop” doesn’t make it into our space vehicles&hellip;
+
+Not to say that ChatGPT and the likes weren’t completely useless; see https://www.linkedin.com/posts/share-7392312770358288386-LafO[this post by Tiago da Silva Jorge on LinkedIn].
+
+
+== Talk length
+
+(One final remark.)
+A lot of talks were 1.5 hours long, which is at least 30 minutes too long for my taste, patience, and – for want of a better word – “conference stamina”.
+I get that, as conference organization, you’d want to give presenters the possibility to dive deeper into a subject than you can in 45-60 minutes.
+// (Also, you potentially save some time by not having to switch presenters (and their laptops) so often.)
+But just diving deeper doesn’t imply the talk is better: that’s still a function of the presenter’s skill at shaping, planning, pacing, and delivering a presentation.
+In my experience, if you have to explain a topic in a short(er) amount of time, you’re automatically forced to “optimize” the way you do that, leading to a better presentation.
+
+For next time, I just might have to buckle down, and let go of my “at most one cup of caffeine-containing beverages per day”-rule.
+
