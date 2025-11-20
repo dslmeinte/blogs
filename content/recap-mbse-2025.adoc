@@ -138,7 +138,12 @@ For the space domain, this is relatively straightforward: an incorrect model sho
 Nevertheless, if a GenAI-produced model doesn’t pass muster, the question is what the value of using GenAI was in the first place.
 Let’s hope that “AI slop” doesn’t make it into our space vehicles&hellip;
 
-Not to say that ChatGPT and the likes weren’t completely useless; see https://www.linkedin.com/posts/share-7392312770358288386-LafO[this post by Tiago da Silva Jorge on LinkedIn].
+****
+Not to say that ChatGPT and the likes aren’t completely useless; see https://www.linkedin.com/posts/share-7392312770358288386-LafO[this post by Tiago da Silva Jorge on LinkedIn].
+
+By the way: it turns out that not everyone can actually see that post because of visibility settings.
+If I can convince the author to agree, I’ll post a screenshot later on.
+****
 
 
 == Talk length
