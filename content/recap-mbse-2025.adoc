@@ -14,7 +14,7 @@ SysML v2 will fix all the problems in MBSE, including tool interoperability!
 But more on that below.
 
 Together with a couple of members of the LionWeb initiative, I traveled to beautiful Vilnius, for the https://b2match.com/e/mbse-2025[MBSE 2025 conference].
-The https://inovacijuagentura.lt/?lang=en[Lithuanian Innovation Agency] was extremely nice to organize this event, together with the Space Hub LT and the European Space Agency [ESA](https://www.esa.int).
+The https://inovacijuagentura.lt/?lang=en[Lithuanian Innovation Agency] was extremely nice to organize this event, together with the Space Hub LT and the European Space Agency https://www.esa.int[ESA].
 Mind that “MBSE” stands for Model-Based *Systems* Engineering, so the end goal of people doing MBSE is not a software system, but rather a system mainly consisting of physical hardware.
 
 We had the following missions:
